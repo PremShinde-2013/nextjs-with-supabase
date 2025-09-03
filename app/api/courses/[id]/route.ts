@@ -1,16 +1,13 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const supabase = await createClient(); // ✅ await here
+export async function GET(req: Request, context: { params: { id: string } }) {
+  const supabase = await createClient(); // await is required
 
   const { data, error } = await supabase
     .from("courses")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", context.params.id)
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
