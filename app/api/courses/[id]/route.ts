@@ -5,7 +5,7 @@ export async function GET(
   req: Request,
   { params }: { params: { id: string } }
 ) {
-  const supabase = createClient(); // ✅ no await here
+  const supabase = await createClient(); // ✅ await here
 
   const { data, error } = await supabase
     .from("courses")
