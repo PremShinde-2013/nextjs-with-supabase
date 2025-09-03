@@ -4,6 +4,7 @@ import { AuroraText } from "@/components/magicui/aurora-text";
 import { Highlighter } from "../magicui/highlighter";
 
 
+
 export function InternshipFlow() {
     const data = [
         {

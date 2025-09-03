@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import {
   useMotionValueEvent,
@@ -9,7 +10,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Highlighter } from "../magicui/highlighter";
 
 interface TimelineEntry {
-  title: string;
+  title: React.ReactNode;
   content: React.ReactNode;
 }
 
