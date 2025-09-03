@@ -39,11 +39,16 @@ export function InternshipFeaturesForm({
         setFeatures([...features, { title: "", description: "", icon_url: "" }]);
     };
 
-    const updateFeature = (index: number, field: keyof Feature, value: any) => {
+    const updateFeature = <K extends keyof Feature>(
+        index: number,
+        field: K,
+        value: Feature[K]
+    ) => {
         const updated = [...features];
         updated[index][field] = value;
         setFeatures(updated);
     };
+
 
     const removeFeature = (index: number) => {
         const updated = features.filter((_, i) => i !== index);

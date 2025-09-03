@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -58,7 +59,9 @@ export default function InternshipInfoForm({
 
     // Add these in your form state
     const [certification, setCertification] = useState<boolean>(defaultValues?.certification ?? true);
-    const [maxSeats, setMaxSeats] = useState<string>(defaultValues?.max_seats ?? "");
+    // const [maxSeats, setMaxSeats] = useState<string>(defaultValues?.max_seats ?? "");
+    const [maxSeats, setMaxSeats] = useState<number>(defaultValues?.max_seats ?? 0);
+
     const [language, setLanguage] = useState<string>(defaultValues?.language ?? "English");
     const [subtitles, setSubtitles] = useState<string[]>(defaultValues?.subtitles ?? []);
     const [subtitleInput, setSubtitleInput] = useState("");

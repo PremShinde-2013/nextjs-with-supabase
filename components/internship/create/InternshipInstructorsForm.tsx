@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -12,6 +13,11 @@ interface InternshipInstructor {
     instructor_id: string;
     role?: string;
     name?: string;
+    avatar_url?: string;
+}
+interface Instructor {
+    id: string;
+    name: string;
     avatar_url?: string;
 }
 
