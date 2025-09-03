@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import CheckoutClient from "./checkoutClient";
 import { getUser } from "@/lib/supabase/getUser";
 
-export default async function CheckoutPage(props: any) {
+// Let TypeScript infer the props type
+export default async function CheckoutPage({ params }) {
     const user = await getUser();
-
-    const courseId = props.params?.id ?? null;
+    const courseId = params?.id ?? null;
 
     return <CheckoutClient courseId={courseId} userId={user?.id ?? null} />;
 }
