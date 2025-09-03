@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -17,6 +18,8 @@ import { toast } from "sonner";
 import { PlusCircle, Link2, Layers, FileText } from "lucide-react";
 
 type InternshipTab = {
+    id?: string; // ✅ add
+
     title: string;
     content: string;
     order: number;
@@ -24,6 +27,8 @@ type InternshipTab = {
 };
 
 type InternshipSubsection = {
+    id?: string; // ✅ add
+
     title: string;
     description: string;
     order: number;
@@ -33,11 +38,15 @@ type InternshipSubsection = {
 };
 
 type InternshipSectionLink = {
+    id?: string; // ✅ add
+
     title: string;
     url: string;
 };
 
 type InternshipSection = {
+    id?: string; // ✅ add
+
     title: string;
     description: string;
     order: number;
