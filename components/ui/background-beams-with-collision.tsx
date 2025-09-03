@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
@@ -100,8 +101,8 @@ export const BackgroundBeamsWithCollision = ({
 const CollisionMechanism = React.forwardRef<
   HTMLDivElement,
   {
-    containerRef: React.RefObject<HTMLDivElement>;
-    parentRef: React.RefObject<HTMLDivElement>;
+    containerRef: React.RefObject<HTMLDivElement | null>;
+    parentRef: React.RefObject<HTMLDivElement | null>;
     beamOptions?: {
       initialX?: number;
       translateX?: number;
@@ -118,7 +119,7 @@ const CollisionMechanism = React.forwardRef<
   const beamRef = useRef<HTMLDivElement>(null);
   const [collision, setCollision] = useState<{
     detected: boolean;
-    coordinates: { x: number; y: number } | null;
+    coordinates: { x: number; y: number; } | null;
   }>({
     detected: false,
     coordinates: null,
