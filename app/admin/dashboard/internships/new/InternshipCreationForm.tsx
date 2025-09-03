@@ -16,7 +16,7 @@ type InternshipCreationFormProps = {
     isEdit?: boolean;    // flag to check if editing
 };
 
-export default function InternshipCreationForm({
+export function InternshipCreationForm({
     defaultData,
     isEdit = false,
 }: InternshipCreationFormProps) {

@@ -3,34 +3,27 @@
 
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 import { CourseInfoForm } from "../../../../../components/courses/create/CourseInfoForm";
 import { CourseBenefitsForm } from "../../../../../components/courses/create/CourseBenefitsForm";
 import { CourseContentForm } from "../../../../../components/courses/create/CourseContentForm";
-import { CourseInstructorsForm } from "../../../../../components/courses/create/CourseInstructorsForm";
+import { CourseInstructorsForm } from "../../../../../components/courses/create/CourseInstructorsForm"; // ✅ new import 
 import { CourseSubmitPreview } from "../../../../../components/courses/create/CourseSubmitPreview";
 
-export default function CourseCreationForm() {
+export function CourseCreationForm() {
     const [step, setStep] = useState(0);
     const tabSteps = ["info", "benefits", "content", "instructors", "submit"];
+    const nextStep = () => { if (step < tabSteps.length - 1) setStep(step + 1); };
+    const prevStep = () => { if (step > 0) setStep(step - 1); };
 
-    const nextStep = () => {
-        if (step < tabSteps.length - 1) setStep(step + 1);
-    };
-
-    const prevStep = () => {
-        if (step > 0) setStep(step - 1);
-    };
-
-    // ✅ Store collected data from all tabs
+    // ✅ Store collected data from all tabs 
     const [courseInfo, setCourseInfo] = useState<any>(null);
     const [courseBenefits, setCourseBenefits] = useState<any>(null);
     const [courseContent, setCourseContent] = useState<any>(null);
     const [courseInstructors, setCourseInstructors] = useState<any>([]);
 
     return (
-        <Tabs value={tabSteps[step]} className="w-full">
-            <TabsList className="grid w-full grid-cols-5 mb-6">
+        <Tabs value={tabSteps[step]} className="w-full ">
+            <TabsList className="grid w-full grid-cols-5 mb-6 flex flex-row">
                 <TabsTrigger value="info" disabled={step < 0}>Course Info</TabsTrigger>
                 <TabsTrigger value="benefits" disabled={step < 1}>Benefits</TabsTrigger>
                 <TabsTrigger value="content" disabled={step < 2}>Content</TabsTrigger>
@@ -64,6 +57,7 @@ export default function CourseCreationForm() {
                 />
             </TabsContent>
 
+            {/* ✅ New Instructors Tab */}
             <TabsContent value="instructors">
                 <CourseInstructorsForm
                     onNext={nextStep}
@@ -79,7 +73,7 @@ export default function CourseCreationForm() {
                     courseInfo={courseInfo}
                     benefits={courseBenefits}
                     content={courseContent}
-                    instructors={courseInstructors}
+                    instructors={courseInstructors} // ✅ pass instructors to preview 
                 />
             </TabsContent>
         </Tabs>
