@@ -29,12 +29,13 @@ type UserInternship = {
         first_name: string;
         last_name: string;
         email: string;
-    };
+    }[];
     internships: {
         title: string;
         level: string | null;
-    };
+    }[];
 };
+
 
 export default function UserInternshipsTable() {
     const [records, setRecords] = useState<UserInternship[]>([]);
@@ -45,22 +46,28 @@ export default function UserInternshipsTable() {
             try {
                 const { data, error } = await supabase
                     .from("user_internships")
-                    .select(
-                        `
-            id,
-            user_id,
-            internship_id,
-            role,
-            status,
-            progress,
-            score,
-            joined_at,
-            completed_at,
-            users(first_name, last_name, email),
-            internships(title, level)
-          `
-                    )
+                    .select(`
+    id,
+    user_id,
+    internship_id,
+    role,
+    status,
+    progress,
+    score,
+    joined_at,
+    completed_at,
+    users!user_internships_user_id_fkey (
+      first_name,
+      last_name,
+      email
+    ),
+    internships!user_internships_internship_id_fkey (
+      title,
+      level
+    )
+  `)
                     .order("joined_at", { ascending: false });
+
 
                 if (error) throw error;
                 setRecords(data || []);
@@ -108,11 +115,11 @@ export default function UserInternshipsTable() {
                                     <TableRow key={r.id}>
                                         <TableCell className="font-mono text-xs">{r.id}</TableCell>
                                         <TableCell>
-                                            {r.users?.first_name} {r.users?.last_name}
+                                            {r.users?.[0]?.first_name} {r.users?.[0]?.last_name}
                                         </TableCell>
-                                        <TableCell>{r.users?.email}</TableCell>
-                                        <TableCell>{r.internships?.title}</TableCell>
-                                        <TableCell>{r.internships?.level || "-"}</TableCell>
+                                        <TableCell>{r.users?.[0]?.email}</TableCell>
+                                        <TableCell>{r.internships?.[0]?.title}</TableCell>
+                                        <TableCell>{r.internships?.[0]?.level || "-"}</TableCell>
                                         <TableCell>
                                             <Badge
                                                 variant={
