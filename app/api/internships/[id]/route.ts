@@ -1,16 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const supabase = createClient();
+export async function GET(req: Request, context: any) {
+  const supabase = await createClient(); // await is required
+
+  const id = context.params?.id; // safely access dynamic route param
+
+  if (!id) {
+    return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+  }
 
   const { data, error } = await supabase
     .from("internships")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .single();
 
   if (error) {
