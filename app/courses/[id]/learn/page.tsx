@@ -190,7 +190,7 @@ export default function LearnPage() {
                         <LessonPlayer
                             lesson={selected}
                             nextLesson={nextLesson}
-                            userId={userId}
+                            userId={userId!}   // 👈 non-null assertion
                             courseId={course.id}
                             onComplete={(next) => {
                                 refreshProgress(userId!);
