@@ -1,14 +1,8 @@
 import CheckoutClient from "./checkoutClient";
 import { getUser } from "@/lib/supabase/getUser";
+import type { PageProps } from "next"; // ✅ import Next.js type
 
-// ✅ Type your params
-interface CheckoutPageProps {
-    params: {
-        id: string;
-    };
-}
-
-export default async function CheckoutPage({ params }: CheckoutPageProps) {
+export default async function CheckoutPage({ params }: PageProps<{ id: string; }>) {
     const user = await getUser();
     const courseId = params.id ?? null;
 
