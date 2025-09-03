@@ -5,7 +5,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import InternshipCreationForm from "@/app/admin/dashboard/internships/new/page"; // reuse your creation form
+import { InternshipCreationForm } from "@/app/admin/dashboard/internships/new/InternshipCreationForm"; // reuse your creation form
 import { toast } from "sonner";
 
 export default function EditInternshipPage() {
