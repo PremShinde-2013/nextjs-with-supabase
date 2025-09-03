@@ -1,9 +1,11 @@
-// app/checkout/[id]/page.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CheckoutClient from "./checkoutClient";
 import { getUser } from "@/lib/supabase/getUser";
 
-export default async function CheckoutPage({ params }: { params: { id: string; }; }) {
+export default async function CheckoutPage(props: any) {
     const user = await getUser();
 
-    return <CheckoutClient courseId={params.id} userId={user?.id ?? null} />;
+    const courseId = props.params?.id ?? null;
+
+    return <CheckoutClient courseId={courseId} userId={user?.id ?? null} />;
 }
