@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/chart";
 import { supabase } from "@/lib/supabase/client";
 
-export const description = "A radar chart with dots (Users Analytics)";
+// export const description = "A radar chart with dots (Users Analytics)";
 
 function getLast6Months() {
     const today = new Date();
