@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -53,22 +54,33 @@ export default function InternshipCompletedPage() {
             const { data, error } = await supabase
                 .from("user_internships")
                 .select(`
-          id,
-          internship_id,
-          status,
-          progress,
-          internship:internship_id (title),
-          user:user_id (first_name, last_name)
-        `)
+      id,
+      internship_id,
+      status,
+      progress,
+      internship:internship_id (title),
+      user:user_id (first_name, last_name)
+    `)
                 .eq("id", userInternshipId)
                 .maybeSingle();
 
-            if (error) return console.error("Error fetching user internship:", error);
-            if (!data) return alert("You are not enrolled in this internship.");
+            if (error) {
+                console.error("Error fetching user internship:", error);
+                return;
+            }
+            if (!data) {
+                alert("You are not enrolled in this internship.");
+                return;
+            }
 
-            setInternshipTitle(data.internship?.title ?? "");
-            setStudentName(`${data.user?.first_name ?? ""} ${data.user?.last_name ?? ""}`);
+            // ✅ Supabase returns arrays for relationships → unwrap
+            const internship = Array.isArray(data.internship) ? data.internship[0] : data.internship;
+            const user = Array.isArray(data.user) ? data.user[0] : data.user;
+
+            setInternshipTitle(internship?.title ?? "");
+            setStudentName(`${user?.first_name ?? ""} ${user?.last_name ?? ""}`);
         };
+
 
         fetchUserInternship();
     }, [userId, userInternshipId]);
@@ -115,24 +127,29 @@ export default function InternshipCompletedPage() {
             const { data, error } = await supabase
                 .from("user_internships")
                 .select(`
-                        id,
-                        internship_id,
-                        status,
-                        progress,
-                internship:internship_id (title, duration),
-                        user:user_id (first_name, last_name)
-                    `)
+    id,
+    internship_id,
+    status,
+    progress,
+    internship:internship_id (title, duration),
+    user:user_id (first_name, last_name)
+  `)
                 .eq("id", userInternshipId)
                 .maybeSingle();
 
             if (error) return console.error(error);
             if (!data) return alert("You are not enrolled in this internship.");
 
-            setInternshipTitle(data.internship?.title ?? "");
-            setStudentName(`${data.user?.first_name ?? ""} ${data.user?.last_name ?? ""}`);
+            // ✅ Supabase types `internship` as an array → pick the first element
+            const internship = Array.isArray(data.internship) ? data.internship[0] : data.internship;
+            const user = Array.isArray(data.user) ? data.user[0] : data.user;
 
-            const months = parseIntervalToMonths(data.internship?.duration);
+            setInternshipTitle(internship?.title ?? "");
+            setStudentName(`${user?.first_name ?? ""} ${user?.last_name ?? ""}`);
+
+            const months = parseIntervalToMonths(internship?.duration ?? null);
             setInternshipDuration(months);
+
 
         };
 
