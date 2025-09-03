@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, MotionProps, useInView } from "motion/react";
+import { motion, MotionProps, useInView } from "framer-motion";
 import {
   Children,
   createContext,

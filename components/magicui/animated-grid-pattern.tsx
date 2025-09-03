@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import {
   ComponentPropsWithoutRef,
   useEffect,
@@ -63,9 +63,9 @@ export function AnimatedGridPattern({
       currentSquares.map((sq) =>
         sq.id === id
           ? {
-              ...sq,
-              pos: getPos(),
-            }
+            ...sq,
+            pos: getPos(),
+          }
           : sq,
       ),
     );

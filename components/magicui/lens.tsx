@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useMotionTemplate } from "motion/react";
+import { AnimatePresence, motion, useMotionTemplate } from "framer-motion";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 
 interface Position {
@@ -71,11 +71,9 @@ export function Lens({
     if (e.key === "Escape") setIsHovering(false);
   }, []);
 
-  const maskImage = useMotionTemplate`radial-gradient(circle ${
-    lensSize / 2
-  }px at ${currentPosition.x}px ${
-    currentPosition.y
-  }px, ${lensColor} 100%, transparent 100%)`;
+  const maskImage = useMotionTemplate`radial-gradient(circle ${lensSize / 2
+    }px at ${currentPosition.x}px ${currentPosition.y
+    }px, ${lensColor} 100%, transparent 100%)`;
 
   const LensContent = useMemo(() => {
     const { x, y } = currentPosition;

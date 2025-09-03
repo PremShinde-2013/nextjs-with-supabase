@@ -5,7 +5,7 @@ import {
   useScroll,
   useTransform,
   motion,
-} from "motion/react";
+} from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { Highlighter } from "../magicui/highlighter";
 
