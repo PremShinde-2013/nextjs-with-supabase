@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { useParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Image from "next/image";
@@ -48,8 +50,8 @@ import InternshipCTA from "@/components/internship/InternshipCTA";
 type Internship = {
     max_seats: any;
     rating: number;
-    average_rating: ReactNode;
-    total_reviews: ReactNode;
+    average_rating: number;
+    total_reviews: number;
     enrolled_count: number;
     skills: any;
     subtitles: any;
@@ -151,7 +153,14 @@ export default function InternshipDetailsPage() {
                 .from("internship_instructors")
                 .select("instructors(*)")
                 .eq("internship_id", internshipId);
-            setInstructors(instructors?.map((i) => i.instructors) || []);
+            setInstructors(
+                instructors?.map((i) => {
+                    if (i.instructors && !Array.isArray(i.instructors)) {
+                        return i.instructors as Instructor;
+                    }
+                    throw new Error("Unexpected instructors shape");
+                }) || []
+            );
 
             const { data: benefits } = await supabase
                 .from("internship_benefits")
@@ -342,14 +351,17 @@ export default function InternshipDetailsPage() {
                                         🚀 What You’ll Explore
                                     </p>
                                     <div className="flex flex-wrap gap-2">
-                                        {(internship.categories ?? []).map((cat, idx) => (
-                                            <Badge
-                                                key={idx}
-                                                className="bg-purple-100 text-purple-800 hover:bg-purple-200"
-                                            >
-                                                {cat}
-                                            </Badge>
-                                        ))}
+                                        {(internship.categories ? internship.categories.split(",") : []).map(
+                                            (cat, idx) => (
+                                                <Badge
+                                                    key={idx}
+                                                    className="bg-purple-100 text-purple-800 hover:bg-purple-200"
+                                                >
+                                                    {cat.trim()}
+                                                </Badge>
+                                            )
+                                        )}
+
                                     </div>
                                 </div>
                             </div>
@@ -716,7 +728,7 @@ export default function InternshipDetailsPage() {
                                                         <AccordionContent className="pl-5 pr-3 pb-3">
                                                             {ss.internship_tabs?.length > 0 ? (
                                                                 <ul className="space-y-2">
-                                                                    {ss.internship_tabs.map((tab, tidx) => (
+                                                                    {ss.internship_tabs.map((tab: any, tidx: any) => (
                                                                         <li
                                                                             key={tab.id}
                                                                             className="flex items-center gap-3 p-2 rounded-md bg-white border border-gray-200 hover:border-indigo-400 transition"
