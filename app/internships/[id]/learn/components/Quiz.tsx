@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
 import { createClient } from "@/lib/supabase/client";
@@ -13,6 +14,9 @@ export default function FinalExam({
     questions: any[];
     userId: string | null;
     internshipId: string;
+    hasAttempt: boolean;
+    onComplete: (payload: { obtained: number; total: number; passed: boolean; }) => void;
+
 }) {
     const supabase = createClient();
     const router = useRouter();

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -15,6 +17,8 @@ export default function InternshipLessonPlayer({
     userInternshipId,
     onSelectTab,
     onCompleteSection,
+    getSectionOfTab,   // <-- add here
+
     getNextTab,
     onStartFinalExam,
 }: {
@@ -24,6 +28,8 @@ export default function InternshipLessonPlayer({
     setProgress: (p: Record<string, boolean>) => void;
     userInternshipId: string | null;
     onSelectTab: (tab: any) => void;
+    getSectionOfTab: (tabId: string) => any | null; // <-- add this
+
     onCompleteSection: (sectionIndex: number) => void;
     getNextTab: (
         tabId: string
