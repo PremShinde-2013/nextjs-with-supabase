@@ -158,11 +158,18 @@ export default function CourseDetailsPage() {
             if (courseErr) throw courseErr;
             setCourse(course);
 
-            const { data: instructors } = await supabase
+            const { data: instructorRows } = await supabase
                 .from("course_instructors")
                 .select("instructors(*)")
                 .eq("course_id", courseId);
-            setInstructors(instructors?.map((i) => i.instructors) || []);
+
+            setInstructors(
+                (instructorRows ?? [])
+                    .map((row) => row.instructors as unknown as Instructor) // 👈 cast safely
+                    .filter((inst): inst is Instructor => inst != null)
+            );
+
+
 
             const { data: benefits } = await supabase
                 .from("course_benefits")
