@@ -41,12 +41,16 @@ export function InternshipBenefitsForm({
             { title: "", description: "", icon_url: "", order: benefits.length + 1 },
         ]);
     };
-
-    const updateBenefit = (index: number, field: keyof Benefit, value: any) => {
+    const updateBenefit = <K extends keyof Benefit>(
+        index: number,
+        field: K,
+        value: Benefit[K]
+    ) => {
         const updated = [...benefits];
         updated[index][field] = value;
         setBenefits(updated);
     };
+
 
     const removeBenefit = (index: number) => {
         const updated = benefits.filter((_, i) => i !== index);
