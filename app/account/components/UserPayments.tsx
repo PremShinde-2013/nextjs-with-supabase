@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -56,27 +57,41 @@ export default function UserPayments() {
             const { data: courses, error: courseError } = await supabase
                 .from("purchases")
                 .select(`
-                    id, amount, currency, status, razorpay_order_id, razorpay_payment_id, created_at,
-                    courses ( name ),
-                    coupons ( code, discount_percent )
-                `)
+          id, amount, currency, status, razorpay_order_id, razorpay_payment_id, created_at,
+          courses ( name ),
+          coupons ( code, discount_percent )
+        `)
                 .eq("user_id", user.id)
                 .order("created_at", { ascending: false });
 
-            if (!courseError && courses) setCoursePayments(courses as CoursePurchase[]);
+            if (!courseError && courses) {
+                const normalizedCourses = courses.map((c: any) => ({
+                    ...c,
+                    courses: c.courses?.[0] ?? null,
+                    coupons: c.coupons?.[0] ?? null,
+                }));
+                setCoursePayments(normalizedCourses);
+            }
 
             // Fetch internship purchases
             const { data: internships, error: internshipError } = await supabase
                 .from("internship_purchases")
                 .select(`
-                    id, amount, currency, status, razorpay_order_id, razorpay_payment_id, created_at,
-                    internships ( title ),
-                    coupons ( code, discount_percent )
-                `)
+          id, amount, currency, status, razorpay_order_id, razorpay_payment_id, created_at,
+          internships ( title ),
+          coupons ( code, discount_percent )
+        `)
                 .eq("user_id", user.id)
                 .order("created_at", { ascending: false });
 
-            if (!internshipError && internships) setInternshipPayments(internships as InternshipPurchase[]);
+            if (!internshipError && internships) {
+                const normalizedInternships = internships.map((i: any) => ({
+                    ...i,
+                    internships: i.internships?.[0] ?? null,
+                    coupons: i.coupons?.[0] ?? null,
+                }));
+                setInternshipPayments(normalizedInternships);
+            }
 
             setLoading(false);
         };
