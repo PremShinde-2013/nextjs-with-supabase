@@ -1,7 +1,7 @@
 
-import InternshipCreationForm from "./InternshipCreationForm";
+import CourseCreationFrom from "./CourseCreationForm";
 
 export default function Page() {
     // You can pass defaultData or isEdit if needed
-    return <InternshipCreationForm isEdit={false} />;
+    return <CourseCreationFrom />;
 }

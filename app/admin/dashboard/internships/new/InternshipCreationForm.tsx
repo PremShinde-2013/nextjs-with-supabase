@@ -40,37 +40,18 @@ export default function InternshipCreationForm({
 
     useEffect(() => {
         if (defaultData) {
-            // Log for debugging to check the structure
-            console.log("Default Data", defaultData);
+            // console.log("Default Data", defaultData); // Log for debugging
 
-            // Ensure all the necessary fields are populated correctly
-            setInternshipInfo({
-                title: defaultData?.title ?? '',
-                description: defaultData?.description ?? '',
-                categories: defaultData?.categories ?? [],
-                tags: defaultData?.tags ?? [],
-                price: defaultData?.price ?? 0,
-                estimated_price: defaultData?.estimated_price ?? 0,
-                level: defaultData?.level ?? '',
-                thumbnail_url: defaultData?.thumbnail_url ?? '',
-                demo_url: defaultData?.demo_url ?? '',
-                duration: defaultData?.duration ?? '',
-                skills: defaultData?.skills ?? [],
-                certification: defaultData?.certification ?? true,
-                max_seats: defaultData?.max_seats ?? 0,
-                language: defaultData?.language ?? 'English',
-                subtitles: defaultData?.subtitles ?? [],
-                rating: defaultData?.rating ?? 0,
-                enrolled_count: defaultData?.enrolled_count ?? 0,
-                // tags: defaultData?.tags ?? [],
-            });
-
+            setInternshipInfo(defaultData); // Ensure info is populated correctly
             setInternshipBenefits(defaultData?.benefits ?? []);
             setInternshipPrerequisites(defaultData?.prerequisites ?? []);
             setInternshipFeatures(defaultData?.features ?? []);
             setInternshipInstructors(defaultData?.instructors ?? []);
         }
     }, [defaultData]);
+    // console.log("internshipInfo", defaultData.id); // Debugging to check if 'id' is present
+
+    const internshipid = defaultData?.id ?? null; // null if new internship
 
     return (
         <Tabs value={tabSteps[step]} className="w-full">
@@ -137,9 +118,10 @@ export default function InternshipCreationForm({
                     prerequisites={internshipPrerequisites}
                     features={internshipFeatures}
                     instructors={internshipInstructors}
-                    isEdit={isEdit} internshipid={undefined} />
+                    isEdit={isEdit}
+                    internshipid={internshipid}
+                />
             </TabsContent>
         </Tabs>
     );
 }
-
