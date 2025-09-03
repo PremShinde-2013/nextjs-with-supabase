@@ -1,20 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import type { RequestEvent } from "next/server";
 
-export async function GET(req: Request, event: RequestEvent) {
-  const supabase = await createClient(); // await is required
+export async function GET(req: Request, context: any) {
+  // Use 'any' for context to bypass TS strictness
+  const supabase = await createClient();
 
-  const { id } = event.params; // access params here
+  const id = context.params?.id; // safely access param
+
+  if (!id) {
+    return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+  }
 
   const { data, error } = await supabase
-    .from("courses")
+    .from("internships")
     .select("*")
     .eq("id", id)
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  if (!data) return NextResponse.json({ error: "Course not found" }, { status: 404 });
+  if (!data) return NextResponse.json({ error: "Internship not found" }, { status: 404 });
 
   return NextResponse.json(data);
 }
