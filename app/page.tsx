@@ -16,12 +16,9 @@ import TopHighlights from "@/components/Landing/TopHighlights";
 import CertificatesShowcase from "@/components/Landing/CertificatesShowcase";
 // import LinkedInMockScroll from "@/components/Landing/LinkedinInMockScroll";
 import PartnershipsShowcase from "@/components/Landing/PartnershipsShowcase";
-import { CallToActionCards } from "@/components/Landing/LandingCard";
 import TerminalCareerDemo from "@/components/Landing/TerminalCareerDemo";
-import FaqManagerPage from "./admin/dashboard/customization/faq/page";
 import FAQSection from "@/components/Landing/FAQSection";
 import VerifyCertificateCard from "@/components/Landing/VerifyCertificateCard";
-import Footer from "@/components/Landing/Footer";
 import { GridPattern } from "@/components/magicui/grid-pattern";
 import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern";
 
