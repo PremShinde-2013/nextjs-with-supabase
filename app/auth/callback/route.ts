@@ -12,7 +12,7 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${origin}/auth/auth-code-error`);
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // Exchange the OAuth code for a session
   const { data, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
