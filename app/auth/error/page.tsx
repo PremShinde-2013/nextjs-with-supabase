@@ -1,10 +1,14 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function Page({
-  searchParams,
-}: {
-  searchParams?: { error?: string; };
-}) {
+interface ErrorPageProps {
+  searchParams?: Promise<{ error?: string; }>;
+}
+
+export default async function Page({ searchParams }: ErrorPageProps) {
+  const params = searchParams ? await searchParams : undefined;
+
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
@@ -16,9 +20,9 @@ export default function Page({
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {searchParams?.error ? (
+              {params?.error ? (
                 <p className="text-sm text-muted-foreground">
-                  Code error: {searchParams.error}
+                  Code error: {params.error}
                 </p>
               ) : (
                 <p className="text-sm text-muted-foreground">

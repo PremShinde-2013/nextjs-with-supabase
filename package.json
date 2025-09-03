@@ -39,6 +39,7 @@
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "critters": "^0.0.25",
     "framer-motion": "^12.23.0",
     "highlight.js": "^11.11.1",
     "katex": "^0.16.22",
