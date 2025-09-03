@@ -22,7 +22,7 @@ interface CourseCertificate {
     issued_at: string;
     courses?: {
         name: string;
-    };
+    }[];   // 👈 fix: array
 }
 
 interface InternshipCertificate {
@@ -33,8 +33,9 @@ interface InternshipCertificate {
     issued_at: string;
     internships?: {
         title: string;
-    };
+    }[]; // 👈 fix: array
 }
+
 
 export default function CertificatesPage() {
     const supabase = createClient();
@@ -114,7 +115,7 @@ export default function CertificatesPage() {
                         {courseCertificates.map((cert) => (
                             <TableRow key={cert.id}>
                                 <TableCell className="font-medium">
-                                    {cert.courses?.name || "Unknown Course"}
+                                    {cert.courses?.[0]?.name || "Unknown Course"}
                                 </TableCell>
                                 <TableCell>{cert.name_on_certificate}</TableCell>
                                 <TableCell>{new Date(cert.issued_at).toLocaleDateString()}</TableCell>
@@ -161,7 +162,7 @@ export default function CertificatesPage() {
                         {internshipCertificates.map((cert) => (
                             <TableRow key={cert.id}>
                                 <TableCell className="font-medium">
-                                    {cert.internships?.title || "Unknown Internship"}
+                                    {cert.internships?.[0]?.title || "Unknown Internship"}
                                 </TableCell>
                                 <TableCell>{cert.name_on_certificate}</TableCell>
                                 <TableCell>{new Date(cert.issued_at).toLocaleDateString()}</TableCell>
