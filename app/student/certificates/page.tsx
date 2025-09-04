@@ -49,63 +49,59 @@ export default function CertificatesPage() {
 
     // Fetch Course Certificates
     useEffect(() => {
+        // Fetch Course Certificates
         if (!userId) return;
         const fetchCourseCertificates = async () => {
             const { data, error } = await supabase
                 .from("course_certificates")
                 .select(`
-                    id,
-                    course_id,
-                    name_on_certificate,
-                    certificate_url,
-                    issued_at,
-                    courses:course_id (name)
-                `)
+            id,
+            course_id,
+            name_on_certificate,
+            certificate_url,
+            issued_at,
+            courses!inner(name)
+        `)
                 .eq("user_id", userId);
 
             if (!error && data) {
                 const normalized = data.map((cert: any) => ({
                     ...cert,
-                    courses: cert.courses?.[0] ?? null, // pick first element
+                    courses: cert.courses ?? null, // already a single object from !inner
                 }));
                 setCourseCertificates(normalized);
             }
-
-
-
-
-
-
         };
+
         fetchCourseCertificates();
     }, [userId]);
 
     // Fetch Internship Certificates
     useEffect(() => {
+        // Fetch Internship Certificates
         if (!userId) return;
         const fetchInternshipCertificates = async () => {
             const { data, error } = await supabase
                 .from("internship_certificates")
                 .select(`
-                    id,
-                    internship_id,
-                    name_on_certificate,
-                    certificate_url,
-                    issued_at,
-                    internships:internship_id (title)
-                `)
+            id,
+            internship_id,
+            name_on_certificate,
+            certificate_url,
+            issued_at,
+            internships!inner(title)
+        `)
                 .eq("user_id", userId);
 
             if (!error && data) {
                 const normalized = data.map((cert: any) => ({
                     ...cert,
-                    internships: cert.internships?.[0] ?? null, // pick first element
+                    internships: cert.internships ?? null, // now a proper object
                 }));
                 setInternshipCertificates(normalized);
             }
-
-
         };
+
         fetchInternshipCertificates();
     }, [userId]);
 
