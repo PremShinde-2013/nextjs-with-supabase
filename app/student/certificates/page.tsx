@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -19,7 +20,7 @@ interface CourseCertificate {
     name_on_certificate: string;
     certificate_url: string;
     issued_at: string;
-    courses?: { name: string; }; // 👈 fetch as object
+    courses?: { name: string; }[]; // 👈 fetch as object
 }
 
 interface InternshipCertificate {
@@ -28,7 +29,7 @@ interface InternshipCertificate {
     name_on_certificate: string;
     certificate_url: string;
     issued_at: string;
-    internships?: { title: string; }; // 👈 fetch as object
+    internships?: { title: string; }[]; // 👈 fetch as object
 }
 
 export default function CertificatesPage() {
@@ -62,7 +63,17 @@ export default function CertificatesPage() {
                 `)
                 .eq("user_id", userId);
 
-            if (!error && data) setCourseCertificates(data);
+            if (!error && data) {
+                const normalized = data.map((cert: any) => ({
+                    ...cert,
+                    courses: cert.courses?.[0] ?? null  // pick first element
+                }));
+                setCourseCertificates(normalized);
+            }
+
+
+
+
         };
         fetchCourseCertificates();
     }, [userId]);
@@ -83,7 +94,15 @@ export default function CertificatesPage() {
                 `)
                 .eq("user_id", userId);
 
-            if (!error && data) setInternshipCertificates(data);
+            // Internship Certificates
+            if (!error && data) {
+                const normalized = data.map((cert: any) => ({
+                    ...cert,
+                    internships: cert.internships?.[0] ?? null  // pick first element
+                }));
+                setInternshipCertificates(normalized);
+            }
+
         };
         fetchInternshipCertificates();
     }, [userId]);
@@ -123,7 +142,7 @@ export default function CertificatesPage() {
                         {courseCertificates.map((cert) => (
                             <TableRow key={cert.id}>
                                 <TableCell className="font-medium">
-                                    {cert.courses?.name || "Unknown Course"}
+                                    {cert.courses?.[0]?.name || "Unknown Course"}
                                 </TableCell>
                                 <TableCell>{cert.name_on_certificate}</TableCell>
                                 <TableCell>{new Date(cert.issued_at).toLocaleDateString()}</TableCell>
@@ -170,7 +189,7 @@ export default function CertificatesPage() {
                         {internshipCertificates.map((cert) => (
                             <TableRow key={cert.id}>
                                 <TableCell className="font-medium">
-                                    {cert.internships?.title || "Unknown Internship"}
+                                    {cert.internships?.[0]?.title || "Unknown Internship"}
                                 </TableCell>
                                 <TableCell>{cert.name_on_certificate}</TableCell>
                                 <TableCell>{new Date(cert.issued_at).toLocaleDateString()}</TableCell>
