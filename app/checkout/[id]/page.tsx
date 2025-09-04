@@ -1,14 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CheckoutClient from "./checkoutClient";
 import { getUser } from "@/lib/supabase/getUser";
 
-interface PageProps {
-    params: { id: string; }; // id from the dynamic route
-}
-
-export default async function CheckoutPage(props: PageProps) {
-    // Destructure params inside the function body, not inline
+export default async function CheckoutPage(props: any) {
     const { params } = props;
-    const courseId = params.id;
+    const courseId = params?.id ?? null;
 
     const user = await getUser();
 

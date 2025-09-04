@@ -1,13 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CheckoutInternshipClient from "../checkoutInternshipClient";
 import { getUser } from "@/lib/supabase/getUser";
 
-interface PageProps {
-    params: { id: string; };
-}
-
-export default async function CheckoutInternshipPage(props: PageProps) {
+export default async function CheckoutInternshipPage(props: any) {
     const { params } = props;
-    const internshipId = params.id;
+    const internshipId = params?.id ?? null;
 
     const user = await getUser();
 
