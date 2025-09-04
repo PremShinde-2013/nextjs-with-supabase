@@ -13,16 +13,13 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 
-// ----- Types -----
 interface CourseCertificate {
     id: string;
     course_id: string;
     name_on_certificate: string;
     certificate_url: string;
     issued_at: string;
-    courses?: {
-        name: string;
-    }[];   // 👈 fix: array
+    courses?: { name: string; }; // 👈 fetch as object
 }
 
 interface InternshipCertificate {
@@ -31,11 +28,8 @@ interface InternshipCertificate {
     name_on_certificate: string;
     certificate_url: string;
     issued_at: string;
-    internships?: {
-        title: string;
-    }[]; // 👈 fix: array
+    internships?: { title: string; }; // 👈 fetch as object
 }
-
 
 export default function CertificatesPage() {
     const supabase = createClient();
@@ -43,7 +37,7 @@ export default function CertificatesPage() {
     const [courseCertificates, setCourseCertificates] = useState<CourseCertificate[]>([]);
     const [internshipCertificates, setInternshipCertificates] = useState<InternshipCertificate[]>([]);
 
-    // ✅ Get logged-in user
+    // Get logged-in user
     useEffect(() => {
         const getUser = async () => {
             const { data } = await supabase.auth.getUser();
@@ -52,13 +46,20 @@ export default function CertificatesPage() {
         getUser();
     }, []);
 
-    // ✅ Fetch Course Certificates
+    // Fetch Course Certificates
     useEffect(() => {
         if (!userId) return;
         const fetchCourseCertificates = async () => {
             const { data, error } = await supabase
                 .from("course_certificates")
-                .select("id, course_id, name_on_certificate, certificate_url, issued_at, courses(name)")
+                .select(`
+                    id,
+                    course_id,
+                    name_on_certificate,
+                    certificate_url,
+                    issued_at,
+                    courses:course_id (name)
+                `)
                 .eq("user_id", userId);
 
             if (!error && data) setCourseCertificates(data);
@@ -66,13 +67,20 @@ export default function CertificatesPage() {
         fetchCourseCertificates();
     }, [userId]);
 
-    // ✅ Fetch Internship Certificates
+    // Fetch Internship Certificates
     useEffect(() => {
         if (!userId) return;
         const fetchInternshipCertificates = async () => {
             const { data, error } = await supabase
                 .from("internship_certificates")
-                .select("id, internship_id, name_on_certificate, certificate_url, issued_at, internships(title)")
+                .select(`
+                    id,
+                    internship_id,
+                    name_on_certificate,
+                    certificate_url,
+                    issued_at,
+                    internships:internship_id (title)
+                `)
                 .eq("user_id", userId);
 
             if (!error && data) setInternshipCertificates(data);
@@ -80,7 +88,7 @@ export default function CertificatesPage() {
         fetchInternshipCertificates();
     }, [userId]);
 
-    // ✅ Download helper
+    // Download helper
     const downloadCertificate = (certificateUrl: string) => {
         const link = document.createElement("a");
         link.href = certificateUrl;
@@ -92,7 +100,7 @@ export default function CertificatesPage() {
 
     return (
         <div className="max-w-6xl mx-auto p-10 space-y-16">
-            {/* ---------------- Course Certificates ---------------- */}
+            {/* Course Certificates */}
             <div>
                 <h1 className="text-3xl font-bold mb-6 text-purple-700">
                     🎓 My Course Certificates
@@ -115,7 +123,7 @@ export default function CertificatesPage() {
                         {courseCertificates.map((cert) => (
                             <TableRow key={cert.id}>
                                 <TableCell className="font-medium">
-                                    {cert.courses?.[0]?.name || "Unknown Course"}
+                                    {cert.courses?.name || "Unknown Course"}
                                 </TableCell>
                                 <TableCell>{cert.name_on_certificate}</TableCell>
                                 <TableCell>{new Date(cert.issued_at).toLocaleDateString()}</TableCell>
@@ -139,7 +147,7 @@ export default function CertificatesPage() {
                 </Table>
             </div>
 
-            {/* ---------------- Internship Certificates ---------------- */}
+            {/* Internship Certificates */}
             <div>
                 <h1 className="text-3xl font-bold mb-6 text-cyan-700">
                     💼 My Internship Certificates
@@ -162,7 +170,7 @@ export default function CertificatesPage() {
                         {internshipCertificates.map((cert) => (
                             <TableRow key={cert.id}>
                                 <TableCell className="font-medium">
-                                    {cert.internships?.[0]?.title || "Unknown Internship"}
+                                    {cert.internships?.title || "Unknown Internship"}
                                 </TableCell>
                                 <TableCell>{cert.name_on_certificate}</TableCell>
                                 <TableCell>{new Date(cert.issued_at).toLocaleDateString()}</TableCell>
