@@ -24,7 +24,7 @@ export async function GET(request: Request) {
 
   const user = data.session.user;
 
-  // Insert into public.users if not exists
+  // Check if user already exists
   const { data: existingUser } = await supabase
     .from("users")
     .select("id")
@@ -32,6 +32,7 @@ export async function GET(request: Request) {
     .maybeSingle();
 
   if (!existingUser) {
+    // Insert new user
     await supabase.from("users").insert({
       id: user.id,
       email: user.email,
@@ -40,7 +41,11 @@ export async function GET(request: Request) {
       role: "student",
       profile_picture: user.user_metadata?.avatar_url || "",
     });
-  }
 
-  return NextResponse.redirect(`${origin}${next}`);
+    // Redirect to signup success page
+    return NextResponse.redirect(`${origin}/auth/signup-success-page`);
+  } else {
+    // User already exists, redirect to homepage
+    return NextResponse.redirect(`${origin}/`);
+  }
 }

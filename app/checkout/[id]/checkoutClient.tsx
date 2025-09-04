@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import * as React from "react";
@@ -17,6 +19,7 @@ export default function CheckoutClient({
     const searchParams = useSearchParams();
 
 
+    console.log("courseid---> ", courseId);
     const rawDiscountedPrice = searchParams.get("price");
     const discountedPrice =
         rawDiscountedPrice && !isNaN(Number(rawDiscountedPrice))

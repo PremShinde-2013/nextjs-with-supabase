@@ -13,7 +13,7 @@ export async function GET(req: Request, context: any) {
   }
 
   const { data, error } = await supabase
-    .from("internships")
+    .from("courses")
     .select("*")
     .eq("id", id)
     .single();

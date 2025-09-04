@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import { Label } from "../../components/ui/label";
-import { Input } from "../../components/ui/input";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import FAQSection from "@/components/Landing/FAQSection";
+import { Input } from "@/components/ui/input";
 
 export default function ContactPage() {
     const supabase = createClient();
