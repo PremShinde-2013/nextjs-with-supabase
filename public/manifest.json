@@ -1,0 +1,20 @@
+{
+    "name": "SkillVeta",
+    "short_name": "SkillVeta",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#a855f7",
+    "serviceworker": {
+        "src": "/service-worker.js",
+        "scope": "/",
+        "type": "classic"
+    },
+    "icons": [
+        {
+            "src": "/favicon.ico",
+            "sizes": "48x48",
+            "type": "image/x-icon"
+        }
+    ]
+}

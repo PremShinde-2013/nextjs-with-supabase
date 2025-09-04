@@ -3,10 +3,11 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(req: Request, context: any) {
-  // Use 'any' for context to bypass TS strictness
   const supabase = await createClient();
 
-  const id = context.params?.id; // safely access param
+  // ✅ Await params for dynamic routes
+  const params = await context.params;
+  const id = params?.id;
 
   if (!id) {
     return NextResponse.json({ error: "Missing ID" }, { status: 400 });
@@ -19,7 +20,7 @@ export async function GET(req: Request, context: any) {
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  if (!data) return NextResponse.json({ error: "Internship not found" }, { status: 404 });
+  if (!data) return NextResponse.json({ error: "Course not found" }, { status: 404 });
 
   return NextResponse.json(data);
 }
