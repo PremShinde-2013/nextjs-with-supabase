@@ -83,6 +83,7 @@ export default function Footer() {
                     <Link href="/privacy-policy" className="text-gray-700 dark:text-gray-300 hover:text-yellow-500 transition-all">Privacy Policy</Link>
                     <Link href="/terms" className="text-gray-700 dark:text-gray-300 hover:text-yellow-500 transition-all">Terms of Use</Link>
                     <Link href="/refund" className="text-gray-700 dark:text-gray-300 hover:text-yellow-500 transition-all">Refund & Cancellation Policy</Link>
+                    <Link href="/ShippingPolicyPage" className="text-gray-700 dark:text-gray-300 hover:text-yellow-500 transition-all">Shipping Policy</Link>
                 </div>
 
                 {/* Get in Touch */}
