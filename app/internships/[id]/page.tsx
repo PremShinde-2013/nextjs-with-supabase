@@ -58,7 +58,7 @@ type Internship = {
     id: string;
     title: string;
     description: string | null;
-    categories: string | null;
+    categories: string[] | null;
     tags: string[] | null;
     price: number;
     estimated_price: number | null;
@@ -351,21 +351,19 @@ export default function InternshipDetailsPage() {
                                         🚀 What You’ll Explore
                                     </p>
                                     <div className="flex flex-wrap gap-2">
-                                        {(internship.categories ? internship.categories.split(",") : []).map(
-                                            (cat, idx) => (
-                                                <Badge
-                                                    key={idx}
-                                                    className="bg-purple-100 text-purple-800 hover:bg-purple-200"
-                                                >
-                                                    {cat.trim()}
-                                                </Badge>
-                                            )
-                                        )}
-
+                                        {(internship.categories ?? []).map((cat: any, idx: any) => (
+                                            <Badge
+                                                key={idx}
+                                                className="bg-purple-100 text-purple-800 hover:bg-purple-200"
+                                            >
+                                                {cat.trim()}
+                                            </Badge>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
                         )}
+
 
                         {/* 🔖 Trending Skills You’ll Master */}
                         {(internship.tags ?? []).length > 0 && (

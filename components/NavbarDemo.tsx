@@ -194,27 +194,41 @@ export function NavbarDemo() {
                 {/* Mobile Nav */}
                 <MobileNav>
                     <MobileNavHeader>
+
                         <NavbarLogo />
-                        <div className="flex flex-row space-x-5">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <button className="relative flex h-9 w-9 items-center justify-center rounded-md bg-transparent text-muted-foreground shadow-sm hover:bg-accent hover:text-foreground transition-all duration-300">
-                                        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                                        <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                                        <span className="sr-only">Toggle theme</span>
-                                    </button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                            <MobileNavToggle
-                                isOpen={isMobileMenuOpen}
-                                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            />
+
+                        <div className="flex flex-row">
+                            <Avatar
+                                className="cursor-pointer w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-600"
+                                onClick={() => router.push("/account")}
+                            >
+                                <AvatarImage src={avatarUrl} alt={fullName ?? "User"} />
+                            </Avatar>
+                            <div className="flex flex-row space-x-5">
+
+
+
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <button className="relative flex h-9 w-9 items-center justify-center rounded-md bg-transparent text-muted-foreground shadow-sm hover:bg-accent hover:text-foreground transition-all duration-300">
+                                            <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                                            <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                                            <span className="sr-only">Toggle theme</span>
+                                        </button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                                <MobileNavToggle
+                                    isOpen={isMobileMenuOpen}
+                                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                                />
+                            </div>
                         </div>
+
                     </MobileNavHeader>
 
                     <MobileNavMenu
