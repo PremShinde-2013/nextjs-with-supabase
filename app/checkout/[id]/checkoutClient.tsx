@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
 
+// Extend window to include Razorpay
 declare global {
     interface Window {
         Razorpay: any;
@@ -24,35 +25,29 @@ export default function CheckoutClient({ courseId, userId }: CheckoutClientProps
     const searchParams = useSearchParams();
 
     const rawDiscountedPrice = searchParams.get("price");
-    const discountedPrice =
-        rawDiscountedPrice && !isNaN(Number(rawDiscountedPrice))
-            ? Number(rawDiscountedPrice)
-            : null;
+    const discountedPrice = rawDiscountedPrice && !isNaN(Number(rawDiscountedPrice))
+        ? Number(rawDiscountedPrice)
+        : null;
 
     const rawCouponId = searchParams.get("couponId");
-    const couponId =
-        rawCouponId && rawCouponId !== "undefined" ? rawCouponId : null;
+    const couponId = rawCouponId && rawCouponId !== "undefined" ? rawCouponId : null;
 
-    // Detect mobile
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(typeof navigator !== "undefined" ? navigator.userAgent : "");
-
-    // Load Razorpay script (for desktop / inline checkout)
+    // Load Razorpay script
     React.useEffect(() => {
-        if (!isMobile) {
-            if (document.getElementById("razorpay-script")) {
-                setRazorpayLoaded(true);
-                return;
-            }
-
-            const script = document.createElement("script");
-            script.id = "razorpay-script";
-            script.src = "https://checkout.razorpay.com/v1/checkout.js";
-            script.async = true;
-            script.onload = () => setRazorpayLoaded(true);
-            script.onerror = () => console.error("Razorpay script failed to load");
-            document.body.appendChild(script);
+        if (typeof window === "undefined") return;
+        if (document.getElementById("razorpay-script")) {
+            setRazorpayLoaded(true);
+            return;
         }
-    }, [isMobile]);
+
+        const script = document.createElement("script");
+        script.id = "razorpay-script";
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.async = true;
+        script.onload = () => setRazorpayLoaded(true);
+        script.onerror = () => console.error("Razorpay script failed to load");
+        document.body.appendChild(script);
+    }, []);
 
     // Fetch course details
     React.useEffect(() => {
@@ -72,7 +67,7 @@ export default function CheckoutClient({ courseId, userId }: CheckoutClientProps
     React.useEffect(() => {
         if (!success) return;
         const interval = setInterval(() => {
-            setCountdown((prev) => {
+            setCountdown(prev => {
                 if (prev <= 1) {
                     clearInterval(interval);
                     window.location.href = `/courses/${courseId}/learn`;
@@ -83,10 +78,13 @@ export default function CheckoutClient({ courseId, userId }: CheckoutClientProps
         return () => clearInterval(interval);
     }, [success, courseId]);
 
-    // Handle payment
+    // Handle Razorpay payment (mobile-friendly)
     const handlePayment = async () => {
-        if (!course || !userId) return;
+        if (!razorpayLoaded || !course || !userId) return;
+
         const finalAmount = discountedPrice ?? course.price;
+        const button = document.getElementById("pay-btn") as HTMLButtonElement;
+        button.disabled = true;
 
         try {
             // Create order on backend
@@ -96,27 +94,13 @@ export default function CheckoutClient({ courseId, userId }: CheckoutClientProps
                 body: JSON.stringify({ amount: finalAmount, currency: "INR" }),
             });
             const order = await orderRes.json();
-
-            if (!order?.id) return console.error("Order creation failed", order);
-
-            if (isMobile) {
-                // Mobile: open Razorpay checkout in a new tab
-                if (!order.payment_url) {
-                    console.error("payment_url missing for mobile checkout");
-                    return;
-                }
-                window.open(order.payment_url, "_blank");
-                return;
-            }
-
-            // Desktop: Inline checkout
-            if (!window.Razorpay) return console.error("Razorpay not loaded");
+            if (!order?.id) throw new Error("Order creation failed");
 
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: order.amount,
                 currency: order.currency,
-                name: "Skillveta",
+                name: "The Startups Explained",
                 description: course.name,
                 order_id: order.id,
                 handler: async (response: any) => {
@@ -142,9 +126,13 @@ export default function CheckoutClient({ courseId, userId }: CheckoutClientProps
                 theme: { color: "#a855f7" },
             };
 
-            new window.Razorpay(options).open();
+            // Open Razorpay immediately on button click
+            // @ts-ignore
+            const rzp = new window.Razorpay(options);
+            rzp.open();
         } catch (err) {
             console.error("Payment error:", err);
+            button.disabled = false;
         }
     };
 
@@ -188,11 +176,12 @@ export default function CheckoutClient({ courseId, userId }: CheckoutClientProps
                         </p>
 
                         <button
-                            disabled={!course}
+                            id="pay-btn"
+                            disabled={!razorpayLoaded || !course}
                             onClick={handlePayment}
                             className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 text-white rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-transform duration-300 disabled:opacity-50"
                         >
-                            Pay & Enroll
+                            {razorpayLoaded ? "Pay & Enroll" : "Loading Payment..."}
                         </button>
 
                         <p className="mt-6 text-sm text-gray-500">🔒 Secure payment powered by Razorpay</p>

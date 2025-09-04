@@ -20,16 +20,11 @@ export async function POST(req: Request) {
         amount: amount * 100, // Razorpay expects paise
         currency: currency || "INR",
         receipt: receipt || "receipt#1",
-        payment_capture: 1,
       }),
     });
 
     const order = await response.json();
-
-    // Generate mobile-friendly full-page checkout URL
-    const payment_url = `https://checkout.razorpay.com/v1/checkout.js?order_id=${order.id}`;
-
-    return NextResponse.json({ ...order, payment_url });
+    return NextResponse.json(order);
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
