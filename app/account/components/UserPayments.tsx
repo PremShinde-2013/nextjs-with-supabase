@@ -53,41 +53,41 @@ export default function UserPayments() {
             } = await supabase.auth.getUser();
             if (!user) return;
 
-            // Fetch course purchases
+            // --- Fetch course purchases with course name ---
             const { data: courses, error: courseError } = await supabase
                 .from("purchases")
                 .select(`
-          id, amount, currency, status, razorpay_order_id, razorpay_payment_id, created_at,
-          courses ( name ),
-          coupons ( code, discount_percent )
-        `)
+                    id, amount, currency, status, razorpay_order_id, razorpay_payment_id, created_at,
+                    courses:course_id ( name ),
+                    coupons ( code, discount_percent )
+                `)
                 .eq("user_id", user.id)
                 .order("created_at", { ascending: false });
 
             if (!courseError && courses) {
                 const normalizedCourses = courses.map((c: any) => ({
                     ...c,
-                    courses: c.courses?.[0] ?? null,
+                    courses: c.courses ?? null,
                     coupons: c.coupons?.[0] ?? null,
                 }));
                 setCoursePayments(normalizedCourses);
             }
 
-            // Fetch internship purchases
+            // --- Fetch internship purchases with internship title ---
             const { data: internships, error: internshipError } = await supabase
                 .from("internship_purchases")
                 .select(`
-          id, amount, currency, status, razorpay_order_id, razorpay_payment_id, created_at,
-          internships ( title ),
-          coupons ( code, discount_percent )
-        `)
+                    id, amount, currency, status, razorpay_order_id, razorpay_payment_id, created_at,
+                    internships:internship_id ( title ),
+                    coupons ( code, discount_percent )
+                `)
                 .eq("user_id", user.id)
                 .order("created_at", { ascending: false });
 
             if (!internshipError && internships) {
                 const normalizedInternships = internships.map((i: any) => ({
                     ...i,
-                    internships: i.internships?.[0] ?? null,
+                    internships: i.internships ?? null,
                     coupons: i.coupons?.[0] ?? null,
                 }));
                 setInternshipPayments(normalizedInternships);

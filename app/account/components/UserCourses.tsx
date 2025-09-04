@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -12,47 +13,39 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
-type CourseRow = {
+type CoursePurchase = {
     id: string;
-    name: string;
-    description: string | null;
-    categories: string | null;
-    price: number;
-    estimated_price: number | null;
-    level: string | null;
-    ratings: number;
-    purchased: number;
-    duration: string | null;
-    language: string | null;
-    certification: boolean | null;
-    course_completions: {
-        passed: boolean;
-        completed_at: string;
-    }[];
+    amount: number;
+    currency: string;
+    status: string;
+    razorpay_order_id: string;
+    razorpay_payment_id: string;
+    created_at: string;
+    courses: { name: string; } | null;
+    coupons: { code: string; discount_percent: number; } | null;
 };
 
-type InternshipRow = {
+type InternshipPurchase = {
     id: string;
-    title: string;
-    level: string | null;
-    duration: string | null;
-    progress: number | null;
-    status: string | null;
-    joined_at: string | null;
-    completed_at: string | null;
+    amount: number;
+    currency: string;
+    status: string;
+    razorpay_order_id: string;
+    razorpay_payment_id: string;
+    created_at: string;
+    internships: { title: string; } | null;
+    coupons: { code: string; discount_percent: number; } | null;
 };
 
-export default function UserLearningTable() {
+export default function UserPayments() {
     const supabase = createClient();
-    const [courses, setCourses] = useState<CourseRow[]>([]);
-    const [internships, setInternships] = useState<InternshipRow[]>([]);
+    const [coursePayments, setCoursePayments] = useState<CoursePurchase[]>([]);
+    const [internshipPayments, setInternshipPayments] = useState<InternshipPurchase[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchUserLearning = async () => {
+        const fetchPayments = async () => {
             setLoading(true);
 
             const {
@@ -60,192 +53,150 @@ export default function UserLearningTable() {
             } = await supabase.auth.getUser();
             if (!user) return;
 
-            // --------------------------
-            // Courses
-            // --------------------------
-            const { data: userCourses } = await supabase
-                .from("users")
-                .select("enrolled_courses")
-                .eq("id", user.id)
-                .single();
+            // -------------------------------
+            // Fetch course purchases
+            // -------------------------------
+            const { data: courses, error: courseError } = await supabase
+                .from("purchases")
+                .select(`
+          id,
+          amount,
+          currency,
+          status,
+          razorpay_order_id,
+          razorpay_payment_id,
+          created_at,
+          courses:course_id ( name ),
+          coupons ( code, discount_percent )
+        `)
+                .eq("user_id", user.id)
+                .order("created_at", { ascending: false });
 
-            if (userCourses?.enrolled_courses?.length) {
-                const { data: courseData } = await supabase
-                    .from("courses")
-                    .select(
-                        `
-                    id, name, description, categories, price, estimated_price,
-                    level, ratings, purchased, duration, language, certification,
-                    course_completions(passed, completed_at)
-                `
-                    )
-                    .in("id", userCourses.enrolled_courses);
-
-                if (courseData) setCourses(courseData as CourseRow[]);
+            if (!courseError && courses) {
+                const normalizedCourses = courses.map((c: any) => ({
+                    ...c,
+                    courses: c.courses ?? null,
+                    coupons: c.coupons?.[0] ?? null,
+                }));
+                setCoursePayments(normalizedCourses);
             }
 
-            // --------------------------
-            // Internships
-            // --------------------------
-            const { data: userInternships } = await supabase
-                .from("user_internships")
+            // -------------------------------
+            // Fetch internship purchases
+            // -------------------------------
+            const { data: internships, error: internshipError } = await supabase
+                .from("internship_purchases")
                 .select(`
-                    id, progress, status, joined_at, completed_at,
-                    internships(id, title, level, duration)
-                `)
+          id,
+          amount,
+          currency,
+          status,
+          razorpay_order_id,
+          razorpay_payment_id,
+          created_at,
+          internships:internship_id ( title ),
+          coupons ( code, discount_percent )
+        `)
                 .eq("user_id", user.id)
-                .order("joined_at", { ascending: false });
+                .order("created_at", { ascending: false });
 
-            if (userInternships) {
-                const formattedInternships = userInternships.map((u: any) => ({
-                    id: u.internships.id,
-                    title: u.internships.title,
-                    level: u.internships.level,
-                    duration: u.internships.duration,
-                    progress: u.progress,
-                    status: u.status,
-                    joined_at: u.joined_at,
-                    completed_at: u.completed_at,
+            if (!internshipError && internships) {
+                const normalizedInternships = internships.map((i: any) => ({
+                    ...i,
+                    internships: i.internships ?? null,
+                    coupons: i.coupons?.[0] ?? null,
                 }));
-                setInternships(formattedInternships);
+                setInternshipPayments(normalizedInternships);
             }
 
             setLoading(false);
         };
 
-        fetchUserLearning();
+        fetchPayments();
     }, []);
 
-    const formatDuration = (duration: string | null) => {
-        if (!duration) return "-";
-        const parts = duration.split(":");
-        if (parts.length >= 2) {
-            const hours = parseInt(parts[0], 10);
-            const minutes = parseInt(parts[1], 10);
-            let result = "";
-            if (hours) result += `${hours}h `;
-            if (minutes) result += `${minutes}m`;
-            return result.trim() || "-";
-        }
-        return duration;
-    };
+    const renderTable = (
+        title: string,
+        payments: (CoursePurchase | InternshipPurchase)[],
+        isCourse: boolean
+    ) => (
+        <div className="mb-12">
+            <h2 className="text-xl font-semibold mb-4">{title}</h2>
+
+            {payments.length === 0 ? (
+                <p>No payments found.</p>
+            ) : (
+                <Table>
+                    <TableCaption>
+                        History of your {isCourse ? "course" : "internship"} purchases.
+                    </TableCaption>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>{isCourse ? "Course" : "Internship"}</TableHead>
+                            <TableHead>Amount</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Coupon</TableHead>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Payment ID</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {payments.map((p) => (
+                            <TableRow key={p.id}>
+                                <TableCell>
+                                    {isCourse
+                                        ? (p as CoursePurchase).courses?.name || "—"
+                                        : (p as InternshipPurchase).internships?.title || "—"}
+                                </TableCell>
+                                <TableCell>
+                                    {p.currency} {p.amount}
+                                </TableCell>
+                                <TableCell>
+                                    {p.status === "completed" ? (
+                                        <Badge className="bg-green-500 text-white">Completed</Badge>
+                                    ) : (
+                                        <Badge
+                                            variant="outline"
+                                            className="text-yellow-600 border-yellow-400"
+                                        >
+                                            {p.status}
+                                        </Badge>
+                                    )}
+                                </TableCell>
+                                <TableCell>
+                                    {p.coupons ? (
+                                        <Badge
+                                            variant="outline"
+                                            className="text-indigo-600 border-indigo-400"
+                                        >
+                                            {p.coupons.code} (-{p.coupons.discount_percent}%)
+                                        </Badge>
+                                    ) : (
+                                        "—"
+                                    )}
+                                </TableCell>
+                                <TableCell>
+                                    {new Date(p.created_at).toLocaleDateString()}
+                                </TableCell>
+                                <TableCell className="text-xs">{p.razorpay_payment_id}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            )}
+        </div>
+    );
 
     return (
-        <div className="p-8 space-y-12">
-            {/* ------------------ Courses Table ------------------ */}
-            <div>
-                <h1 className="text-2xl font-bold mb-6 text-indigo-700">
-                    📘 My Enrolled Courses
-                </h1>
-                {loading ? (
-                    <p>Loading...</p>
-                ) : courses.length === 0 ? (
-                    <p>No enrolled courses found.</p>
-                ) : (
-                    <Table>
-                        <TableCaption>Your enrolled courses with progress & certificate status.</TableCaption>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Course</TableHead>
-                                <TableHead>Category</TableHead>
-                                <TableHead>Level</TableHead>
-                                <TableHead>Language</TableHead>
-                                <TableHead>Duration</TableHead>
-                                <TableHead>Ratings</TableHead>
-                                <TableHead>Certificate</TableHead>
-                                <TableHead className="text-right">Action</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {courses.map((course) => {
-                                const completed = course.course_completions?.[0];
-                                return (
-                                    <TableRow key={course.id}>
-                                        <TableCell className="font-medium">{course.name}</TableCell>
-                                        <TableCell>{course.categories || "-"}</TableCell>
-                                        <TableCell>{course.level || "All Levels"}</TableCell>
-                                        <TableCell>{course.language}</TableCell>
-                                        <TableCell>{formatDuration(course.duration)}</TableCell>
-                                        <TableCell>⭐ {course.ratings?.toFixed(1) || 0}</TableCell>
-                                        <TableCell>
-                                            {completed?.passed ? (
-                                                <Badge className="bg-green-500 text-white">Completed</Badge>
-                                            ) : course.certification ? (
-                                                <Badge variant="outline" className="text-yellow-600 border-yellow-400">
-                                                    In Progress
-                                                </Badge>
-                                            ) : (
-                                                <Badge variant="outline">No Certificate</Badge>
-                                            )}
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            <Button asChild size="sm">
-                                                <Link href={`/courses/${course.id}`}>View</Link>
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                )}
-            </div>
-
-            {/* ------------------ Internships Table ------------------ */}
-            <div>
-                <h1 className="text-2xl font-bold mb-6 text-indigo-700">
-                    💼 My Enrolled Internships
-                </h1>
-                {loading ? (
-                    <p>Loading...</p>
-                ) : internships.length === 0 ? (
-                    <p>No enrolled internships found.</p>
-                ) : (
-                    <Table>
-                        <TableCaption>Your internships with progress & status.</TableCaption>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Internship</TableHead>
-                                <TableHead>Level</TableHead>
-                                <TableHead>Duration</TableHead>
-                                <TableHead>Progress</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead className="text-right">Action</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {internships.map((internship) => (
-                                <TableRow key={internship.id}>
-                                    <TableCell className="font-medium">{internship.title}</TableCell>
-                                    <TableCell>{internship.level || "All Levels"}</TableCell>
-                                    <TableCell>{formatDuration(internship.duration)}</TableCell>
-                                    <TableCell>{internship.progress?.toFixed(0) || 0}%</TableCell>
-                                    <TableCell>
-                                        {internship.status === "completed" ? (
-                                            <Badge className="bg-green-500 text-white">Completed</Badge>
-                                        ) : internship.status === "in_progress" ? (
-                                            <Badge variant="outline" className="text-yellow-600 border-yellow-400">
-                                                In Progress
-                                            </Badge>
-                                        ) : internship.status === "enrolled" ? (
-                                            <Badge variant="outline" className="text-blue-600 border-blue-400">
-                                                Enrolled
-                                            </Badge>
-                                        ) : (
-                                            <Badge variant="outline">{internship.status}</Badge>
-                                        )}
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                        <Button asChild size="sm">
-                                            <Link href={`/internships/${internship.id}`}>View</Link>
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                )}
-            </div>
+        <div className="p-6">
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                <>
+                    {renderTable("💳 Your Course Payments", coursePayments, true)}
+                    {renderTable("💳 Your Internship Payments", internshipPayments, false)}
+                </>
+            )}
         </div>
     );
 }
