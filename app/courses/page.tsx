@@ -89,14 +89,14 @@ export default async function CoursesPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {courses.map((course: Course) => (
-                    <CardContainer key={course.id} className="inter-var">
+                    <CardContainer key={course.id} className="inter-var mx-auto sm:mx-0 max-w-xs sm:max-w-full ">
                         <CardBody
-                            className="relative group/card rounded-2xl p-6 
+                            className="relative group/card rounded-2xl p-6  sm:p-6
                 border border-indigo-200/30 dark:border-indigo-800/30 
                 bg-gradient-to-br from-indigo-50 via-purple-50 to-white 
                 dark:from-indigo-950 dark:via-purple-950 dark:to-neutral-900
                 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col h-full
-                backdrop-blur-xl"
+                backdrop-blur-xl  "
                         >
                             {/* Title */}
                             <CardItem

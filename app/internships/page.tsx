@@ -91,9 +91,9 @@ export default function InternshipsPage() {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {internships.map((internship) => (
-                        <CardContainer key={internship.id} className="inter-var">
+                        <CardContainer key={internship.id} className="inter-var sm:mx-0 max-w-xs sm:max-w-full">
                             <CardBody
-                                className="relative group/card rounded-2xl p-6 
+                                className="relative group/card rounded-2xl p-6 sm:p-6
                   border border-blue-200/30 dark:border-blue-800/30 
                   bg-gradient-to-br from-blue-50 via-cyan-50 to-white 
                   dark:from-blue-950 dark:via-cyan-950 dark:to-neutral-900
