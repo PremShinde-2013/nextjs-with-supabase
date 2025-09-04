@@ -5,7 +5,7 @@
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
 
-// Extend window to include Razorpay
+// --- Extend window to include Razorpay ---
 declare global {
     interface Window {
         Razorpay: any;
@@ -25,12 +25,14 @@ export default function CheckoutClient({ courseId, userId }: CheckoutClientProps
     const searchParams = useSearchParams();
 
     const rawDiscountedPrice = searchParams.get("price");
-    const discountedPrice = rawDiscountedPrice && !isNaN(Number(rawDiscountedPrice))
-        ? Number(rawDiscountedPrice)
-        : null;
+    const discountedPrice =
+        rawDiscountedPrice && !isNaN(Number(rawDiscountedPrice))
+            ? Number(rawDiscountedPrice)
+            : null;
 
     const rawCouponId = searchParams.get("couponId");
-    const couponId = rawCouponId && rawCouponId !== "undefined" ? rawCouponId : null;
+    const couponId =
+        rawCouponId && rawCouponId !== "undefined" ? rawCouponId : null;
 
     // Load Razorpay script
     React.useEffect(() => {
@@ -67,7 +69,7 @@ export default function CheckoutClient({ courseId, userId }: CheckoutClientProps
     React.useEffect(() => {
         if (!success) return;
         const interval = setInterval(() => {
-            setCountdown(prev => {
+            setCountdown((prev) => {
                 if (prev <= 1) {
                     clearInterval(interval);
                     window.location.href = `/courses/${courseId}/learn`;
@@ -78,23 +80,23 @@ export default function CheckoutClient({ courseId, userId }: CheckoutClientProps
         return () => clearInterval(interval);
     }, [success, courseId]);
 
-    // Handle Razorpay payment (mobile-friendly)
+    // Handle Razorpay payment
     const handlePayment = async () => {
         if (!razorpayLoaded || !course || !userId) return;
 
-        const finalAmount = discountedPrice ?? course.price;
-        const button = document.getElementById("pay-btn") as HTMLButtonElement;
-        button.disabled = true;
-
         try {
-            // Create order on backend
+            const finalAmount = discountedPrice ?? course.price;
+
             const orderRes = await fetch("/api/razorpay/order", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ amount: finalAmount, currency: "INR" }),
             });
+
             const order = await orderRes.json();
-            if (!order?.id) throw new Error("Order creation failed");
+            if (!order?.id) return console.error("Order creation failed", order);
+
+            if (!window.Razorpay) return console.error("Razorpay not loaded");
 
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
@@ -126,13 +128,9 @@ export default function CheckoutClient({ courseId, userId }: CheckoutClientProps
                 theme: { color: "#a855f7" },
             };
 
-            // Open Razorpay immediately on button click
-            // @ts-ignore
-            const rzp = new window.Razorpay(options);
-            rzp.open();
+            new window.Razorpay(options).open();
         } catch (err) {
             console.error("Payment error:", err);
-            button.disabled = false;
         }
     };
 
@@ -176,7 +174,6 @@ export default function CheckoutClient({ courseId, userId }: CheckoutClientProps
                         </p>
 
                         <button
-                            id="pay-btn"
                             disabled={!razorpayLoaded || !course}
                             onClick={handlePayment}
                             className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 text-white rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-transform duration-300 disabled:opacity-50"

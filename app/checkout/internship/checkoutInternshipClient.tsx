@@ -58,67 +58,68 @@ export default function CheckoutInternshipClient({
             return () => clearInterval(interval);
         }
     }, [success, internshipId]);
+
     const handlePayment = async () => {
         if (!razorpayLoaded || !internship || !userId) return;
-
-        // Disable button to prevent multiple clicks
-        const button = document.getElementById("pay-btn") as HTMLButtonElement;
-        button.disabled = true;
 
         try {
             const finalAmount = discountedPrice ?? internship.price;
 
-            // Create order on backend (still async)
+            // Create order on backend
             const orderRes = await fetch("/api/razorpay/order", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    amount: finalAmount,
+                    amount: finalAmount, // in INR
                     currency: "INR",
                     receipt: `intern_${internship.id.slice(0, 8)}_${userId.slice(0, 6)}_${Date.now()}`,
                 }),
             });
-            const order = await orderRes.json();
-            if (!order?.id) throw new Error("Order creation failed");
 
-            // Razorpay options
+
+            const order = await orderRes.json();
+            if (!order?.id) {
+                console.error("Order creation failed:", order);
+                return;
+            }
+
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-                amount: order.amount,
+                amount: order.amount, // paise (already handled by backend)
                 currency: order.currency,
                 name: "The Startups Explained",
                 description: internship.title,
                 order_id: order.id,
-                handler: async (response: any) => {
-                    // Verify payment after success
-                    await fetch("/api/razorpay/verify-internship", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature: response.razorpay_signature,
-                            user_id: userId,
-                            internship_id: internship.id,
-                            amount: finalAmount,
-                            coupon_id: couponId || null,
-                        }),
-                    });
-                    setSuccess(true);
+                handler: async function (response: any) {
+                    try {
+                        await fetch("/api/razorpay/verify-internship", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature,
+                                user_id: userId,
+                                internship_id: internship.id,
+                                amount: finalAmount,
+                                coupon_id: couponId || null,
+                            }),
+                        });
+                        setSuccess(true);
+                    } catch (err) {
+                        console.error("Verification failed:", err);
+                    }
                 },
                 theme: { color: "#a855f7" },
             };
 
-            // Important: Open Razorpay modal immediately after button click
             // @ts-ignore
             const rzp = new window.Razorpay(options);
             rzp.open();
         } catch (err) {
             console.error("Payment error:", err);
-            button.disabled = false;
         }
     };
-
 
     return (
         <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
