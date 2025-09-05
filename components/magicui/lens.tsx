@@ -34,7 +34,7 @@ interface LensProps {
 export function Lens({
   children,
   zoomFactor = 1.3,
-  lensSize = 170,
+  lensSize = 80,
   isStatic = false,
   position = { x: 0, y: 0 },
   defaultPosition,

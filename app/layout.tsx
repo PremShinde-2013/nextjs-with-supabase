@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-page-custom-font */
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -14,13 +15,26 @@ const defaultUrl = process.env.NEXT_PUBLIC_APP_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
-  // ✅ Add Open Sans in metadata
+  title: "Skillveta - Top Courses & Internships for Students",
+  description: "Skillveta provides top courses and internships for engineering students. Learn programming, web development, AI/ML, and boost your career with Skillveta.",
+  keywords: [
+    "Skillveta",
+    "online courses",
+    "internships",
+    "programming courses",
+    "web development",
+    "AI ML courses",
+    "engineering students",
+  ],
+  authors: [{ name: "Skillveta Team" }],
+
   icons: {
-    icon: "/favicon.ico",
+    icon: "/images/favicon-96x96.png",
+    shortcut: "/images/apple-icon-120x120.png",
+    apple: "/images/apple-icon-120x120.png",
   },
 };
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +58,44 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
           rel="stylesheet"
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "EducationalOrganization",
+              "name": "Skillveta",
+              "url": defaultUrl,
+              "logo": `${defaultUrl}/logo.svg`,
+              "sameAs": ["https://www.facebook.com/skillveta", "https://twitter.com/skillveta"],
+              "course": [
+                {
+                  "@type": "Course",
+                  "name": "C Programming Course",
+                  "description": "Learn C programming from beginner to advanced with practical projects.",
+                  "provider": {
+                    "@type": "Organization",
+                    "name": "Skillveta",
+                    "sameAs": defaultUrl
+                  }
+                },
+                {
+                  "@type": "Course",
+                  "name": "Python for Beginners",
+                  "description": "Learn Python with hands-on examples and projects.",
+                  "provider": {
+                    "@type": "Organization",
+                    "name": "Skillveta",
+                    "sameAs": defaultUrl
+                  }
+                }
+              ]
+            }),
+          }}
+        />
+        <meta name="theme-color" content="#ff6a00" />
+
+
       </head>
 
 

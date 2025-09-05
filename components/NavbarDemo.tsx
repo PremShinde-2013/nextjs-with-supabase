@@ -193,40 +193,53 @@ export function NavbarDemo() {
 
                 {/* Mobile Nav */}
                 <MobileNav>
-                    <MobileNavHeader>
+                    <MobileNavHeader className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-[#fff8f0]/80 via-[#fff0f8]/70 to-[#f0f4ff]/80 dark:from-[#0f0a1a]/80 dark:via-[#1a1025]/80 dark:to-[#0f0a1a]/80  rounded-b-xl">
 
                         <NavbarLogo />
 
-                        <div className="flex flex-row">
+                        <div className="flex items-center gap-3">
+                            {/* User Avatar
                             <Avatar
-                                className="cursor-pointer w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-600"
+                                className="cursor-pointer w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-600 hover:scale-105 transition-transform"
                                 onClick={() => router.push("/account")}
                             >
                                 <AvatarImage src={avatarUrl} alt={fullName ?? "User"} />
-                            </Avatar>
-                            <div className="flex flex-row space-x-5">
+                            </Avatar> */}
 
+                            {user ? (
+                                <Avatar
+                                    className="cursor-pointer w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-600"
+                                    onClick={() => router.push("/account")}
+                                >
+                                    <AvatarImage src={avatarUrl} alt={fullName ?? "User"} />
+                                </Avatar>
+                            )
+                                : <></>}
 
+                            {/* Theme Toggle */}
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <button className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#fff0f8]/70 dark:bg-[#1a1025]/80 text-[#1a1025] dark:text-[#f0f4ff] shadow-sm hover:bg-[#f0e0f0]/80 dark:hover:bg-[#2a1a35]/80 transition-all duration-300">
+                                        <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                                        <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                                        <span className="sr-only">Toggle theme</span>
+                                    </button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                    align="end"
+                                    className="bg-[#fff8f0]/90 dark:bg-[#0f0a1a]/90 rounded-md shadow-lg border border-[#e8dce8]/50 dark:border-[#2a1a35]/50"
+                                >
+                                    <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
 
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <button className="relative flex h-9 w-9 items-center justify-center rounded-md bg-transparent text-muted-foreground shadow-sm hover:bg-accent hover:text-foreground transition-all duration-300">
-                                            <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                                            <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                                            <span className="sr-only">Toggle theme</span>
-                                        </button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                        <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                                <MobileNavToggle
-                                    isOpen={isMobileMenuOpen}
-                                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                                />
-                            </div>
+                            {/* Hamburger */}
+                            <MobileNavToggle
+                                isOpen={isMobileMenuOpen}
+                                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            />
                         </div>
 
                     </MobileNavHeader>
@@ -234,20 +247,22 @@ export function NavbarDemo() {
                     <MobileNavMenu
                         isOpen={isMobileMenuOpen}
                         onClose={() => setIsMobileMenuOpen(false)}
+                        className="bg-gradient-to-b from-[#fff8f0]/80 via-[#fff0f8]/70 to-[#f0f4ff]/80 dark:from-[#0f0a1a]/80 dark:via-[#1a1025]/80 dark:to-[#0f0a1a]/80 p-4 rounded-b-xl shadow-lg space-y-3"
                     >
+                        {/* Navigation Links */}
                         {isMounted &&
                             (user ? loggedInNavItems : nonLoggedInNavItems).map((item, idx) => (
                                 <a
                                     key={`mobile-link-${idx}`}
                                     href={item.link}
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="text-neutral-600 dark:text-neutral-300"
+                                    className="block px-4 py-2 rounded-md text-[#1a1025] dark:text-[#f0f4ff] hover:bg-[#fff0f8]/60 dark:hover:bg-[#2a1a35]/70 transition"
                                 >
                                     {item.name}
                                 </a>
                             ))}
 
-                        {/* Mobile Auth Buttons */}
+                        {/* Auth Buttons */}
                         {!user && (
                             <div className="flex flex-col gap-3 mt-4">
                                 <button
@@ -255,7 +270,7 @@ export function NavbarDemo() {
                                         setIsMobileMenuOpen(false);
                                         router.push("/auth/login");
                                     }}
-                                    className="w-full text-left px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-neutral-800 transition"
+                                    className="w-full text-left px-4 py-2 rounded-md bg-[#ff8c42] text-white hover:bg-[#ff944e] transition"
                                 >
                                     Login
                                 </button>
@@ -264,7 +279,7 @@ export function NavbarDemo() {
                                         setIsMobileMenuOpen(false);
                                         router.push("/auth/signup");
                                     }}
-                                    className="w-full text-left px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-neutral-800 transition"
+                                    className="w-full text-left px-4 py-2 rounded-md border border-[#ff8c42] text-[#ff8c42] hover:bg-[#fff4eb] dark:hover:bg-[#1a1025]/70 transition"
                                 >
                                     Sign up for free
                                 </button>
@@ -272,6 +287,8 @@ export function NavbarDemo() {
                         )}
                     </MobileNavMenu>
                 </MobileNav>
+
+
             </Navbar>
         </div>
     );

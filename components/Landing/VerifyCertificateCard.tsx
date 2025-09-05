@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -11,18 +12,16 @@ export default function VerifyCertificateCard() {
             {/* Left: Image with Lens effect */}
             <div className="flex-1 flex justify-center items-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <Lens isStatic position={{ x: 415, y: 305 }}>
-                    <img
-                        src="https://dhyeneqgxucokgtxiyaj.supabase.co/storage/v1/object/public/certificates/Sample_Internship_Certificate.png"
-                        alt="Certificate Preview"
-                        width={500}
-                        height={500}
-                        className="rounded-2xl shadow-2xl object-cover"
-                        draggable={false} // 🚫 disable drag
-                        onContextMenu={(e) => e.preventDefault()} // 🚫 disable right-click
+                <img
+                    src="https://dhyeneqgxucokgtxiyaj.supabase.co/storage/v1/object/public/certificates/verification_certificate.png"
+                    alt="Certificate Preview"
+                    width={500}
+                    height={500}
+                    className="rounded-2xl shadow-2xl object-cover"
+                    draggable={false} // 🚫 disable drag
+                    onContextMenu={(e) => e.preventDefault()} // 🚫 disable right-click
 
-                    />
-                </Lens>
+                />
             </div>
 
             {/* Right: Text + CTA */}
