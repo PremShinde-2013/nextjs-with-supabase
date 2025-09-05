@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -18,12 +19,13 @@ export function CourseResourcesForm({
     const handleFileChange = (type: "ebook" | "projectZip", file: File | null) => {
         if (type === "ebook") {
             setEbook(file);
-            onChange?.({ ebook: file, projectZip });
+            onChange?.({ ebook: file, projectZip }); // ✅ pass both
         } else {
             setProjectZip(file);
-            onChange?.({ ebook, projectZip: file });
+            onChange?.({ ebook, projectZip: file }); // ✅ pass both
         }
     };
+
 
     return (
         <div className="space-y-6">

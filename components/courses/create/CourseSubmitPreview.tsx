@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -63,13 +65,21 @@ export function CourseSubmitPreview({
     const benefitsList = normalizeTitles(benefits?.benefits);
     const prerequisitesList = normalizeTitles(benefits?.prerequisites);
     const featuresList = normalizeTitles(benefits?.features || []);  // 👈 from benefits page
-
     const handleSubmit = async () => {
         setLoading(true);
         const supabase = createClient();
 
         try {
-            if (mode === "edit" && courseId) {
+            let newCourseId: string; // ✅ Must be string
+
+            // ---------------- EDIT MODE ----------------
+            if (mode === "edit") {
+                if (!courseId) {
+                    toast.error("Course ID missing for edit mode");
+                    return;
+                }
+                newCourseId = courseId;
+
                 await supabase
                     .from("courses")
                     .update({
@@ -83,24 +93,25 @@ export function CourseSubmitPreview({
                         demo_url: courseInfo?.demo_url,
                         thumbnail_url: courseInfo?.thumbnail_url,
                         certification: courseInfo?.certification,
-                        duration: courseInfo?.duration,
+                        duration: courseInfo?.duration || null, // ✅ avoid interval "" error
                         language: courseInfo?.language,
                         subtitles: courseInfo?.subtitles,
                     })
-                    .eq("id", courseId);
+                    .eq("id", newCourseId);
 
-                // 🔄 Clean old relations
-                await supabase.from("course_benefits").delete().eq("course_id", courseId);
-                await supabase.from("course_prerequisites").delete().eq("course_id", courseId);
-                await supabase.from("course_features").delete().eq("course_id", courseId);
-                await supabase.from("course_data").delete().eq("course_id", courseId);
-                await supabase.from("course_instructors").delete().eq("course_id", courseId);
-                await supabase.from("course_resources").delete().eq("course_id", courseId);
+                // Clean old relations
+                await supabase.from("course_benefits").delete().eq("course_id", newCourseId);
+                await supabase.from("course_prerequisites").delete().eq("course_id", newCourseId);
+                await supabase.from("course_features").delete().eq("course_id", newCourseId);
+                await supabase.from("course_data").delete().eq("course_id", newCourseId);
+                await supabase.from("course_instructors").delete().eq("course_id", newCourseId);
+                await supabase.from("course_resources").delete().eq("course_id", newCourseId);
 
-
-                await insertRelatedData(courseId, resources);
+                await insertRelatedData(newCourseId, resources);
                 toast.success("✅ Course updated successfully.");
+
             } else {
+                // ---------------- CREATE MODE ----------------
                 const { data, error } = await supabase
                     .from("courses")
                     .insert([
@@ -115,7 +126,7 @@ export function CourseSubmitPreview({
                             demo_url: courseInfo?.demo_url,
                             thumbnail_url: courseInfo?.thumbnail_url,
                             certification: courseInfo?.certification,
-                            duration: courseInfo?.duration,
+                            duration: courseInfo?.duration || null, // ✅ avoid interval "" error
                             language: courseInfo?.language,
                             subtitles: courseInfo?.subtitles,
                         },
@@ -123,12 +134,15 @@ export function CourseSubmitPreview({
                     .select()
                     .single();
 
-                if (error || !data) {
+                if (error || !data?.id) {
                     toast.error("❌ Course submission failed.");
+                    console.error("Course insert error:", error);
                     return;
                 }
 
-                await insertRelatedData(data.id, resources);
+                newCourseId = data.id; // ✅ guaranteed string now
+
+                await insertRelatedData(newCourseId, resources);
                 toast.success("✅ Course submitted successfully.");
             }
         } catch (err) {
@@ -139,52 +153,42 @@ export function CourseSubmitPreview({
         }
     };
 
-    const insertRelatedData = async (courseId: string, resources?: { ebook?: File | null; projectZip?: File | null; }
+
+
+    // ---------------- Insert Related Data ----------------
+    const insertRelatedData = async (
+        courseId: string,
+        resources?: { ebook?: File | null; projectZip?: File | null; }
     ) => {
         const supabase = createClient();
 
+        // Benefits, Prerequisites, Features
         const normalizedBenefits = normalizeTitles(benefits?.benefits);
         const normalizedPrereqs = normalizeTitles(benefits?.prerequisites);
         const normalizedFeatures = normalizeTitles(benefits?.features || []);
 
-        if (normalizedBenefits.length > 0) {
+        if (normalizedBenefits.length)
             await supabase.from("course_benefits").insert(
-                normalizedBenefits.map((title) => ({
-                    title,
-                    course_id: courseId,
-                }))
+                normalizedBenefits.map((title) => ({ title, course_id: courseId }))
             );
-        }
 
-        if (normalizedPrereqs.length > 0) {
+        if (normalizedPrereqs.length)
             await supabase.from("course_prerequisites").insert(
-                normalizedPrereqs.map((title) => ({
-                    title,
-                    course_id: courseId,
-                }))
+                normalizedPrereqs.map((title) => ({ title, course_id: courseId }))
             );
-        }
 
-        if (normalizedFeatures.length > 0) {
+        if (normalizedFeatures.length)
             await supabase.from("course_features").insert(
-                normalizedFeatures.map((title) => ({
-                    title,
-                    course_id: courseId,
-                }))
+                normalizedFeatures.map((title) => ({ title, course_id: courseId }))
             );
-        }
 
-        // Insert instructors
-        if (instructors.length > 0) {
+        // Instructors
+        if (instructors.length)
             await supabase.from("course_instructors").insert(
-                instructors.map((instructor: any) => ({
-                    course_id: courseId,
-                    instructor_id: instructor.id,
-                }))
+                instructors.map((inst) => ({ course_id: courseId, instructor_id: inst.id }))
             );
-        }
 
-        // Insert course content
+        // Course Content
         for (const section of content) {
             for (const [lessonIndex, lesson] of section.lessons.entries()) {
                 const { data: lessonData } = await supabase
@@ -204,7 +208,7 @@ export function CourseSubmitPreview({
 
                 if (!lessonData) continue;
 
-                if (lesson.links?.length > 0) {
+                if (lesson.links?.length)
                     await supabase.from("course_data_links").insert(
                         lesson.links.map((link: any) => ({
                             course_data_id: lessonData.id,
@@ -212,63 +216,34 @@ export function CourseSubmitPreview({
                             url: link.url,
                         }))
                     );
-                }
             }
         }
-        // Insert resources (ebooks, projects)
+
+        // Resources (Upload Files)
         if (resources?.ebook) {
             const { data: ebookUpload, error: ebookError } = await supabase.storage
-                .from("ebooks") // 👈 your bucket
-                .upload(`courses/${courseId}/ebook-${Date.now()}.pdf`, resources.ebook, {
-                    cacheControl: "3600",
-                    upsert: false,
-                });
+                .from("ebooks")
+                .upload(`courses/${courseId}/ebook-${Date.now()}.pdf`, resources.ebook, { cacheControl: "3600", upsert: true });
 
-            if (ebookError) {
-                console.error("❌ Ebook upload failed:", ebookError.message);
-            } else {
-                const ebookUrl = supabase.storage
-                    .from("ebooks")
-                    .getPublicUrl(ebookUpload.path).data.publicUrl;
-
-                await supabase.from("course_resources").insert([
-                    {
-                        course_id: courseId,
-                        type: "ebook",
-                        file_url: ebookUrl,
-                    },
-                ]);
-            }
+            if (!ebookError && ebookUpload?.path) {
+                const ebookUrl = supabase.storage.from("ebooks").getPublicUrl(ebookUpload.path).data.publicUrl;
+                if (ebookUrl)
+                    await supabase.from("course_resources").insert([{ course_id: courseId, type: "ebook", file_url: ebookUrl }]);
+            } else console.error("Ebook upload failed:", ebookError);
         }
 
         if (resources?.projectZip) {
             const { data: projectUpload, error: projectError } = await supabase.storage
-                .from("projects") // 👈 your bucket
-                .upload(`courses/${courseId}/project-${Date.now()}.zip`, resources.projectZip, {
-                    cacheControl: "3600",
-                    upsert: false,
-                });
+                .from("projects")
+                .upload(`courses/${courseId}/project-${Date.now()}.zip`, resources.projectZip, { cacheControl: "3600", upsert: true });
 
-            if (projectError) {
-                console.error("❌ Project upload failed:", projectError.message);
-            } else {
-                const projectUrl = supabase.storage
-                    .from("projects")
-                    .getPublicUrl(projectUpload.path).data.publicUrl;
-
-                await supabase.from("course_resources").insert([
-                    {
-                        course_id: courseId,
-                        type: "project",
-                        file_url: projectUrl,
-                    },
-                ]);
-            }
+            if (!projectError && projectUpload?.path) {
+                const projectUrl = supabase.storage.from("projects").getPublicUrl(projectUpload.path).data.publicUrl;
+                if (projectUrl)
+                    await supabase.from("course_resources").insert([{ course_id: courseId, type: "project", file_url: projectUrl }]);
+            } else console.error("Project upload failed:", projectError);
         }
-
-
     };
-    console.log("Preview Features:", features);
 
 
 
