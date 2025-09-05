@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
@@ -73,14 +74,24 @@ export default function Page() {
                 {activeTab === "payments" && <UserPayments />}
 
                 {activeTab === "logout" && (
-                    <Card className="w-full shadow-lg border border-red-200/30 bg-gradient-to-br from-red-50 via-white to-pink-50 rounded-2xl">
+                    <Card
+                        className="w-full shadow-lg border border-red-200/30 
+             bg-gradient-to-br from-red-50 via-white to-pink-50 
+             dark:from-gray-900 dark:via-gray-950 dark:to-red-950/40
+             rounded-2xl"
+                    >
                         <CardHeader>
-                            <CardTitle className="text-red-600 font-bold">Logout</CardTitle>
+                            <CardTitle className="text-red-600 dark:text-red-400 font-bold">
+                                Logout
+                            </CardTitle>
                         </CardHeader>
+
                         <CardContent className="flex justify-center">
                             <Button
                                 variant="destructive"
-                                className="bg-gradient-to-r from-red-500 to-pink-500 text-white hover:from-red-600 hover:to-pink-600 transition-all duration-300 rounded-xl"
+                                className="bg-gradient-to-r from-red-500 to-pink-500 
+                 text-white hover:from-red-600 hover:to-pink-600 
+                 transition-all duration-300 rounded-xl"
                                 onClick={handleLogout}
                             >
                                 <LogOut className="mr-2 h-4 w-4" />
@@ -88,6 +99,7 @@ export default function Page() {
                             </Button>
                         </CardContent>
                     </Card>
+
                 )}
             </div>
         </div>

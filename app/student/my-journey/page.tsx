@@ -116,7 +116,7 @@ export default function MyLearningPage() {
                 {loading ? (
                     <p>Loading...</p>
                 ) : courses.length === 0 ? (
-                    <p className="text-center text-purple-600 font-bold"> <Highlighter action="highlight" color="#FFA500" >Go start learning</Highlighter>  💪</p>
+                    <p className="text-center text-purple-600 font-bold"> <Highlighter action="highlight" color="#FFA500" >Go start learning</Highlighter> </p>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         {courses.map((course) => (
@@ -199,7 +199,7 @@ export default function MyLearningPage() {
                 {loading ? (
                     <p>Loading...</p>
                 ) : internships.length === 0 ? (
-                    <p className="text-center text-cyan-600 font-bold"> <Highlighter action="underline" color="#FFA500" >No internships yet. Go build real skills</Highlighter> 💪</p>
+                    <p className="text-center text-cyan-600 font-bold"> <Highlighter action="underline" color="#FFA500" >No internships yet. Go build real skills</Highlighter> </p>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         {internships.map((internship) => (

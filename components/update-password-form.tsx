@@ -43,20 +43,26 @@ export function UpdatePasswordForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="w-full border border-indigo-200/20 bg-gradient-to-br from-indigo-50 via-white to-pink-50 shadow-sm rounded-2xl">
+      <Card
+        className="w-full border border-indigo-200/20 
+             bg-gradient-to-br from-indigo-50 via-white to-pink-50 
+             dark:from-gray-900 dark:via-gray-950 dark:to-indigo-950/40
+             shadow-sm rounded-2xl"
+      >
         <CardHeader>
           <CardTitle className="text-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             Reset Your Password
           </CardTitle>
-          <CardDescription className="text-gray-600">
+          <CardDescription className="text-gray-600 dark:text-gray-300">
             Please enter your new password below.
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <form onSubmit={handleForgotPassword}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="password" className="text-sm text-gray-600">
+                <Label htmlFor="password" className="text-sm text-gray-600 dark:text-gray-300">
                   New password
                 </Label>
                 <Input
@@ -66,13 +72,22 @@ export function UpdatePasswordForm({
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="mt-1 border-gray-300 focus:border-indigo-400 focus:ring focus:ring-indigo-200/50"
+                  className="mt-1 border-gray-300 dark:border-gray-700 
+                       bg-white dark:bg-gray-800 
+                       text-gray-900 dark:text-gray-100
+                       focus:border-indigo-400 focus:ring focus:ring-indigo-200/50"
                 />
               </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
+
+              {error && <p className="text-sm text-red-500 dark:text-red-400">{error}</p>}
+
               <Button
                 type="submit"
-                className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow hover:from-purple-700 hover:to-pink-700 transition-colors"
+                className="w-full rounded-xl 
+                     bg-gradient-to-r from-purple-600 to-pink-600 
+                     text-white shadow 
+                     hover:from-purple-700 hover:to-pink-700 
+                     transition-colors"
                 disabled={isLoading}
               >
                 {isLoading ? "Saving..." : "Save new password"}
@@ -81,6 +96,7 @@ export function UpdatePasswordForm({
           </form>
         </CardContent>
       </Card>
+
     </div>
   );
 }

@@ -4,9 +4,9 @@ import { Marquee } from "@/components/magicui/marquee";
 import Image from "next/image";
 
 const partnerLogos = [
-    "https://dhyeneqgxucokgtxiyaj.supabase.co/storage/v1/object/public/avatars/iso_logo.jpg",
+    "https://dhyeneqgxucokgtxiyaj.supabase.co/storage/v1/object/public/avatars/iso_logo-final.png",
     "https://dhyeneqgxucokgtxiyaj.supabase.co/storage/v1/object/public/avatars/msme-logo.png",
-    "https://dhyeneqgxucokgtxiyaj.supabase.co/storage/v1/object/public/avatars/nvdia.png",
+    "https://dhyeneqgxucokgtxiyaj.supabase.co/storage/v1/object/public/avatars/nvdia-images-final.png",
     // add more logos here
 ];
 
@@ -32,7 +32,7 @@ export default function PartnershipsShowcase() {
                                 alt={`Partner logo ${idx + 1}`}
                                 width={80} // smaller for mobile
                                 height={80}
-                                className="h-12 sm:h-16 w-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                                className="h-12 sm:h-16 w-auto object-contain filter  transition-all duration-300"
                             />
                         </div>
                     ))}

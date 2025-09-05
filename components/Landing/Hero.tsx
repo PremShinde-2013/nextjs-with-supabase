@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 
@@ -90,7 +91,7 @@ export function HeroSectionOne() {
                 >
                     <div className="w-full overflow-hidden rounded-xl border border-gray-300 dark:border-gray-700">
                         <img
-                            src="https://assets.aceternity.com/pro/aceternity-landing.webp"
+                            src="/images/hero_main_image.png"
                             alt="Internship platform preview"
                             className="aspect-[16/9] h-auto w-full object-cover"
                             height={1000}

@@ -128,46 +128,66 @@ export default function EditProfileForm() {
 
     return (
 
-        <Card className="w-full border border-indigo-200/20 bg-gradient-to-br from-indigo-50 via-white to-pink-50 shadow-sm rounded-2xl">
+        <Card
+            className="w-full border border-indigo-200/20 
+             bg-gradient-to-br from-indigo-50 via-white to-pink-50 
+             dark:from-gray-900 dark:via-gray-950 dark:to-indigo-950/40
+             shadow-sm rounded-2xl"
+        >
             <CardHeader>
-                <CardTitle className="text-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <CardTitle
+                    className="text-lg font-semibold 
+                 bg-gradient-to-r from-purple-600 to-pink-600 
+                 bg-clip-text text-transparent"
+                >
                     Edit Profile
                 </CardTitle>
             </CardHeader>
+
             <CardContent className="space-y-4">
                 <div>
-                    <Label className="text-sm text-gray-600">First Name</Label>
+                    <Label className="text-sm text-gray-600 dark:text-gray-300">First Name</Label>
                     <Input
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         placeholder="John"
-                        className="mt-1 border-gray-300 focus:border-indigo-400 focus:ring focus:ring-indigo-200/50"
+                        className="mt-1 border-gray-300 dark:border-gray-700 
+                   bg-white dark:bg-gray-800 
+                   text-gray-900 dark:text-gray-100
+                   focus:border-indigo-400 focus:ring focus:ring-indigo-200/50"
                     />
                 </div>
 
                 <div>
-                    <Label className="text-sm text-gray-600">Last Name</Label>
+                    <Label className="text-sm text-gray-600 dark:text-gray-300">Last Name</Label>
                     <Input
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         placeholder="Doe"
-                        className="mt-1 border-gray-300 focus:border-indigo-400 focus:ring focus:ring-indigo-200/50"
+                        className="mt-1 border-gray-300 dark:border-gray-700 
+                   bg-white dark:bg-gray-800 
+                   text-gray-900 dark:text-gray-100
+                   focus:border-indigo-400 focus:ring focus:ring-indigo-200/50"
                     />
                 </div>
 
                 <div>
-                    <Label className="text-sm text-gray-600">Profile Picture</Label>
+                    <Label className="text-sm text-gray-600 dark:text-gray-300">Profile Picture</Label>
                     <Input
                         type="file"
                         accept="image/*"
                         onChange={(e) => setFile(e.target.files?.[0] || null)}
-                        className="mt-1 border-gray-300 focus:border-indigo-400 focus:ring focus:ring-indigo-200/50"
+                        className="mt-1 border-gray-300 dark:border-gray-700 
+                   bg-white dark:bg-gray-800 
+                   text-gray-900 dark:text-gray-100
+                   focus:border-indigo-400 focus:ring focus:ring-indigo-200/50"
                     />
                     {(file || profileUrl) && (
                         <img
                             src={file ? URL.createObjectURL(file) : profileUrl}
                             alt="Profile"
-                            className="w-20 h-20 rounded-full mt-2 object-cover border border-indigo-100"
+                            className="w-20 h-20 rounded-full mt-2 object-cover 
+                     border border-indigo-100 dark:border-indigo-800"
                         />
                     )}
                 </div>
@@ -175,12 +195,17 @@ export default function EditProfileForm() {
                 <Button
                     onClick={handleUpdate}
                     disabled={loading}
-                    className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow hover:from-purple-700 hover:to-pink-700 transition-colors"
+                    className="w-full rounded-xl 
+                 bg-gradient-to-r from-purple-600 to-pink-600 
+                 text-white shadow 
+                 hover:from-purple-700 hover:to-pink-700 
+                 transition-colors"
                 >
                     {loading ? "Updating..." : "Update Profile"}
                 </Button>
             </CardContent>
         </Card>
+
 
     );
 }

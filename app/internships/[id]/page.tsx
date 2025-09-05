@@ -392,14 +392,16 @@ export default function InternshipDetailsPage() {
                         {/* Skills list */}
                         {internship.skills?.length > 0 && (
                             <div className="space-y-2">
-                                <h3 className="text-lg font-semibold flex items-center gap-2 text-gray-900">
-                                    <Sparkles className="h-5 w-5 text-indigo-600" /> Skills You’ll Learn
+                                <h3 className="text-lg font-semibold flex items-center gap-2 text-gray-900 dark:text-gray-100">
+                                    <Sparkles className="h-5 w-5 text-indigo-600 dark:text-yellow-500" />
+                                    Skills You’ll Learn
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
                                     {internship.skills.map((skill: string, i: number) => (
                                         <Badge
                                             key={i}
-                                            className="bg-orange-50 text-orange-700 border border-orange-200 hover:bg-orange-200"
+                                            className="bg-orange-50 text-orange-700 border border-orange-200 hover:bg-orange-200 
+                     dark:bg-orange-900 dark:text-orange-100 dark:border-orange-800 dark:hover:bg-orange-800"
                                         >
                                             {skill}
                                         </Badge>
@@ -407,6 +409,7 @@ export default function InternshipDetailsPage() {
                                 </div>
                             </div>
                         )}
+
 
                         {/* Ratings + Stats */}
                         <div className="flex flex-wrap gap-5 text-sm text-gray-600 mt-2">
@@ -635,46 +638,68 @@ export default function InternshipDetailsPage() {
 
                     {/* Benefits */}
                     {benefits.length > 0 && (
-                        <div className="mt-10 ">
-                            <h2 className="text-2xl font-bold mb-12 flex items-center gap-2">
-                                <Lightbulb className="h-7 w-7 text-yellow-500" /> What you&apos;ll learn
+                        <div className="mt-10">
+                            <h2 className="text-2xl font-bold mb-12 flex items-center gap-2 text-gray-900 dark:text-gray-100">
+                                <Lightbulb className="h-7 w-7 text-yellow-500 dark:text-yellow-400" />
+                                What you&apos;ll learn
                             </h2>
                             <div className="grid sm:grid-cols-2 gap-4">
                                 {benefits.map((b) => (
-                                    <div key={b.id} className="flex items-start gap-3 p-3 rounded-xl bg-green-50">
-                                        <CheckCircle className="h-5 w-5 text-green-600 mt-1" />
+                                    <div
+                                        key={b.id}
+                                        className="flex items-start gap-3 p-3 rounded-xl 
+                     bg-green-50 text-gray-900 
+                     dark:bg-green-900 dark:text-gray-100"
+                                    >
+                                        <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mt-1" />
                                         <span>{b.title}</span>
                                     </div>
                                 ))}
                             </div>
                         </div>
                     )}
-
                     {/* Prerequisites */}
                     {prerequisites.length > 0 && (
                         <div className="mt-10">
-                            <h2 className="text-2xl font-bold mb-12 flex items-center gap-2">
-                                <Target className="h-7 w-7 text-red-500" /> Prerequisites 🎯
+                            <h2 className="text-2xl font-bold mb-12 flex items-center gap-2 text-gray-900 dark:text-gray-100">
+                                <Target className="h-7 w-7 text-red-500 dark:text-red-400" />
+                                Prerequisites 🎯
                             </h2>
-                            {prerequisites.map((p) => (
-                                <div key={p.id} className="p-3 bg-red-50 rounded-lg">
-                                    ⚡ {p.title}
-                                </div>
-                            ))}
+                            <div className="space-y-3">
+                                {prerequisites.map((p) => (
+                                    <div
+                                        key={p.id}
+                                        className="p-3 rounded-lg 
+                     bg-red-50 text-gray-900 
+                     dark:bg-red-900/40 dark:text-gray-100"
+                                    >
+                                        ⚡ {p.title}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
+
 
                     {/* Features */}
                     {features.length > 0 && (
                         <div className="mt-10">
-                            <h2 className="text-2xl font-bold mb-12 flex items-center gap-2">
-                                <Sparkles className="h-7 w-7 text-purple-500" /> Internship Features ✨
+                            <h2 className="text-2xl font-bold mb-12 flex items-center gap-2 text-gray-900 dark:text-gray-100">
+                                <Sparkles className="h-7 w-7 text-purple-500 dark:text-purple-400" />
+                                Internship Features ✨
                             </h2>
-                            {features.map((f) => (
-                                <div key={f.id} className="p-3 bg-purple-50 rounded-lg">
-                                    🌟 {f.title}
-                                </div>
-                            ))}
+                            <div className="space-y-3">
+                                {features.map((f) => (
+                                    <div
+                                        key={f.id}
+                                        className="p-3 rounded-lg 
+                     bg-purple-50 text-gray-900 
+                     dark:bg-purple-900/40 dark:text-gray-100"
+                                    >
+                                        🌟 {f.title}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
 
@@ -684,8 +709,9 @@ export default function InternshipDetailsPage() {
                     {/* Sections */}
                     {sections.length > 0 && (
                         <div className="mt-14">
-                            <h2 className="text-3xl font-extrabold mb-16 flex items-center gap-3">
-                                <BookOpen className="h-8 w-8 text-indigo-500" /> Internship Content
+                            <h2 className="text-3xl font-extrabold mb-16 flex items-center gap-3 text-gray-900 dark:text-gray-100">
+                                <BookOpen className="h-8 w-8 text-indigo-500 dark:text-indigo-400" />
+                                Internship Content
                             </h2>
 
                             <Accordion
@@ -697,10 +723,12 @@ export default function InternshipDetailsPage() {
                                     <AccordionItem
                                         key={section.id}
                                         value={section.id}
-                                        className="border rounded-xl shadow-sm bg-gradient-to-br from-purple-50 to-white"
+                                        className="border rounded-xl shadow-sm 
+                     bg-gradient-to-br from-purple-50 to-white 
+                     dark:from-purple-900/30 dark:to-gray-900"
                                     >
-                                        <AccordionTrigger className="px-4 py-3 hover:bg-purple-100/60 rounded-lg">
-                                            <div className="flex items-center gap-3 font-semibold text-purple-800">
+                                        <AccordionTrigger className="px-4 py-3 hover:bg-purple-100/60 dark:hover:bg-purple-800/40 rounded-lg">
+                                            <div className="flex items-center gap-3 font-semibold text-purple-800 dark:text-purple-300">
                                                 <span className="h-8 w-8 rounded-full bg-purple-600 text-white flex items-center justify-center shadow">
                                                     {idx + 1}
                                                 </span>
@@ -715,10 +743,12 @@ export default function InternshipDetailsPage() {
                                                     <AccordionItem
                                                         key={ss.id}
                                                         value={ss.id}
-                                                        className="border rounded-lg bg-pink-50"
+                                                        className="border rounded-lg 
+                             bg-pink-50 
+                             dark:bg-pink-900/30"
                                                     >
-                                                        <AccordionTrigger className="px-3 py-2 hover:bg-pink-100/70 rounded-md">
-                                                            <div className="flex items-center gap-2 text-pink-800 font-medium">
+                                                        <AccordionTrigger className="px-3 py-2 hover:bg-pink-100/70 dark:hover:bg-pink-800/40 rounded-md">
+                                                            <div className="flex items-center gap-2 text-pink-800 dark:text-pink-300 font-medium">
                                                                 📖 {ss.title}
                                                             </div>
                                                         </AccordionTrigger>
@@ -729,15 +759,20 @@ export default function InternshipDetailsPage() {
                                                                     {ss.internship_tabs.map((tab: any, tidx: any) => (
                                                                         <li
                                                                             key={tab.id}
-                                                                            className="flex items-center gap-3 p-2 rounded-md bg-white border border-gray-200 hover:border-indigo-400 transition"
+                                                                            className="flex items-center gap-3 p-2 rounded-md 
+                                       bg-white border border-gray-200 hover:border-indigo-400 
+                                       dark:bg-gray-800 dark:border-gray-700 dark:hover:border-indigo-500 transition"
                                                                         >
-                                                                            <span className="text-indigo-600 font-medium">
+                                                                            <span className="text-indigo-600 dark:text-indigo-400 font-medium">
                                                                                 {tidx + 1}.
                                                                             </span>
-                                                                            <span className="text-gray-800">{tab.title}</span>
+                                                                            <span className="text-gray-800 dark:text-gray-200">{tab.title}</span>
 
                                                                             {tab.is_preview && (
-                                                                                <span className="ml-auto text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
+                                                                                <span className="ml-auto text-xs px-2 py-0.5 
+                                               bg-green-100 text-green-700 
+                                               dark:bg-green-900/40 dark:text-green-300 rounded-full"
+                                                                                >
                                                                                     Preview
                                                                                 </span>
                                                                             )}
@@ -745,7 +780,7 @@ export default function InternshipDetailsPage() {
                                                                     ))}
                                                                 </ul>
                                                             ) : (
-                                                                <p className="text-sm text-gray-500 italic">
+                                                                <p className="text-sm text-gray-500 dark:text-gray-400 italic">
                                                                     No tabs available
                                                                 </p>
                                                             )}
@@ -757,21 +792,28 @@ export default function InternshipDetailsPage() {
                                     </AccordionItem>
                                 ))}
                             </Accordion>
-
                         </div>
                     )}
+
 
 
 
                     {/* Instructors */}
                     {instructors.length > 0 && (
                         <div className="mt-16">
-                            <h2 className="text-3xl font-extrabold mb-16 flex items-center gap-3">
-                                <GraduationCap className="h-8 w-8 text-indigo-500" /> Meet the Mentors
+                            <h2 className="text-3xl font-extrabold mb-16 flex items-center gap-3 text-gray-900 dark:text-gray-100">
+                                <GraduationCap className="h-8 w-8 text-indigo-500 dark:text-indigo-400" />
+                                Meet the Mentors
                             </h2>
+
                             <div className="grid md:grid-cols-2 gap-8 mb-40">
                                 {instructors.map((inst) => (
-                                    <div key={inst.id} className="p-6 rounded-2xl bg-indigo-50">
+                                    <div
+                                        key={inst.id}
+                                        className="p-6 rounded-2xl 
+                     bg-indigo-50 text-gray-900 
+                     dark:bg-indigo-900/30 dark:text-gray-100"
+                                    >
                                         <div className="flex items-center gap-5">
                                             <Image
                                                 src={inst.avatar_url || "https://via.placeholder.com/100"}
@@ -782,7 +824,7 @@ export default function InternshipDetailsPage() {
                                             />
                                             <div>
                                                 <p className="font-bold">{inst.name}</p>
-                                                <p className="text-sm">{inst.bio}</p>
+                                                <p className="text-sm text-gray-700 dark:text-gray-300">{inst.bio}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -790,6 +832,7 @@ export default function InternshipDetailsPage() {
                             </div>
                         </div>
                     )}
+
                 </div>
 
                 {/* Right column (sticky) */}
