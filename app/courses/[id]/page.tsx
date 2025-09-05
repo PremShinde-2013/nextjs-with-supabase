@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -93,6 +95,8 @@ type CourseBenefit = { id: string; title: string; };
 type CourseFeature = { id: string; title: string; };
 type CoursePrerequisite = { id: string; title: string; };
 type CourseData = {
+    order: number;
+    section_order: number;
     id: string;
     title: string;
     section: string | null;
@@ -194,8 +198,10 @@ export default function CourseDetailsPage() {
                 .from("course_data")
                 .select("*")
                 .eq("course_id", courseId)
-                .order("order", { ascending: true });
+                .order("section_order", { ascending: true }) // sections first
+                .order("order", { ascending: true });        // lessons inside sections
             setCourseData(courseData || []);
+
         } catch (err) {
             console.error(err);
             toast.error("Failed to fetch course details");
@@ -203,6 +209,8 @@ export default function CourseDetailsPage() {
 
         setLoading(false);
     };
+
+
 
     const formatDuration = (duration: string | null) => {
         if (!duration) return null;
@@ -228,6 +236,21 @@ export default function CourseDetailsPage() {
         acc[section].push(item);
         return acc;
     }, {} as Record<string, CourseData[]>);
+
+    // Sort lessons within each section by "order"
+    Object.keys(groupedContent).forEach((section) => {
+        groupedContent[section].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    });
+
+    // Optional: sort sections by section_order
+    const sortedSections = Object.entries(groupedContent).sort(
+        ([aSection, aLessons], [bSection, bLessons]) => {
+            const aOrder = aLessons[0]?.section_order ?? 0;
+            const bOrder = bLessons[0]?.section_order ?? 0;
+            return aOrder - bOrder;
+        }
+    );
+
 
     const applyCoupon = async () => {
         if (!couponCode) return toast.error("Enter a coupon code");
@@ -622,7 +645,7 @@ export default function CourseDetailsPage() {
                     <CertificatePreview />
 
                     {/* 📘 Course Content */}
-                    {Object.keys(groupedContent).length > 0 && (
+                    {courseData.length > 0 && (
                         <div className="mt-24">
                             <h2 className="text-3xl font-extrabold mb-16 flex items-center gap-3 tracking-tight ">
                                 <BookOpen className="h-8 w-8 text-indigo-500 animate-pulse" />
@@ -630,55 +653,79 @@ export default function CourseDetailsPage() {
                             </h2>
 
                             <Accordion type="multiple" className="w-full space-y-3">
-                                {Object.entries(groupedContent).map(([section, lessons], idx) => (
-                                    <AccordionItem key={section} value={section}>
-                                        <AccordionTrigger
-                                            className="group text-lg font-semibold px-4 py-3 rounded-xl 
-                       bg-gradient-to-r from-indigo-50 to-purple-100 dark:from-neutral-800 dark:to-neutral-900
-                       border border-indigo-200 dark:border-neutral-700
-                       hover:shadow-lg hover:scale-[1.015] transition-all"
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <span className="flex items-center justify-center h-8 w-8 rounded-full 
-                               bg-gradient-to-br from-purple-500 to-pink-500 
-                               text-white text-sm font-bold shadow-md">
-                                                    {idx + 1}
-                                                </span>
-                                                {section}
-                                            </div>
-                                        </AccordionTrigger>
+                                {(() => {
+                                    // Group content by section
+                                    const groupedContent = courseData.reduce((acc, item) => {
+                                        const section = item.section || "General";
+                                        if (!acc[section]) acc[section] = [];
+                                        acc[section].push(item);
+                                        return acc;
+                                    }, {} as Record<string, CourseData[]>);
 
-                                        <AccordionContent>
-                                            <ul className="space-y-3 mt-3">
-                                                {lessons.map((lesson) => (
-                                                    <li
-                                                        key={lesson.id}
-                                                        className="flex items-center justify-between px-4 py-2 rounded-lg 
-                             bg-gradient-to-r from-pink-50 to-rose-100 dark:from-neutral-800 dark:to-neutral-900
-                             border border-pink-200 dark:border-neutral-700
-                             hover:scale-[1.02] hover:shadow-md transition-all cursor-pointer"
+                                    // Sort lessons inside each section by "order"
+                                    Object.keys(groupedContent).forEach((section) => {
+                                        groupedContent[section].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+                                    });
+
+                                    // Sort sections by section_order
+                                    const sortedSections = Object.entries(groupedContent).sort(
+                                        ([, aLessons], [, bLessons]) =>
+                                            (aLessons[0]?.section_order ?? 0) - (bLessons[0]?.section_order ?? 0)
+                                    );
+
+                                    return sortedSections.map(([section, lessons], idx) => (
+                                        <AccordionItem key={section} value={section}>
+                                            <AccordionTrigger
+                                                className="group text-lg font-semibold px-4 py-3 rounded-xl 
+                bg-gradient-to-r from-indigo-50 to-purple-100 dark:from-neutral-800 dark:to-neutral-900
+                border border-indigo-200 dark:border-neutral-700
+                hover:shadow-lg hover:scale-[1.015] transition-all"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <span
+                                                        className="flex items-center justify-center h-8 w-8 rounded-full 
+                    bg-gradient-to-br from-purple-500 to-pink-500 
+                    text-white text-sm font-bold shadow-md"
                                                     >
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="text-pink-600">📖</span>
-                                                            <span>{lesson.title}</span>
-                                                        </div>
-                                                        {lesson.is_preview && (
-                                                            <Badge
-                                                                variant="outline"
-                                                                className="border-pink-500 text-pink-600 bg-pink-50/80 dark:bg-neutral-800"
-                                                            >
-                                                                🎥 Preview
-                                                            </Badge>
-                                                        )}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                ))}
+                                                        {idx + 1}
+                                                    </span>
+                                                    {section}
+                                                </div>
+                                            </AccordionTrigger>
+
+                                            <AccordionContent>
+                                                <ul className="space-y-3 mt-3">
+                                                    {lessons.map((lesson) => (
+                                                        <li
+                                                            key={lesson.id}
+                                                            className="flex items-center justify-between px-4 py-2 rounded-lg 
+                      bg-gradient-to-r from-pink-50 to-rose-100 dark:from-neutral-800 dark:to-neutral-900
+                      border border-pink-200 dark:border-neutral-700
+                      hover:scale-[1.02] hover:shadow-md transition-all cursor-pointer"
+                                                        >
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="text-pink-600">📖</span>
+                                                                <span>{lesson.title}</span>
+                                                            </div>
+                                                            {lesson.is_preview && (
+                                                                <Badge
+                                                                    variant="outline"
+                                                                    className="border-pink-500 text-pink-600 bg-pink-50/80 dark:bg-neutral-800"
+                                                                >
+                                                                    🎥 Preview
+                                                                </Badge>
+                                                            )}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    ));
+                                })()}
                             </Accordion>
                         </div>
                     )}
+
 
                     {/* 👨‍🏫 Instructors */}
                     {instructors.length > 0 && (

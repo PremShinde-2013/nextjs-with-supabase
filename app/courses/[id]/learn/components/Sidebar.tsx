@@ -10,6 +10,8 @@ interface Lesson {
     title: string;
     section: string;
     order: number;
+    section_order: number; // ✅ add this
+
 }
 
 interface Course {
@@ -71,9 +73,9 @@ export default function Sidebar({
         .map(([section, lessons]) => ({
             section,
             lessons: lessons.sort((a, b) => a.order - b.order), // sort inside section
-            minOrder: Math.min(...lessons.map(l => l.order)),   // lowest order in section
+            section_order: lessons[0].section_order ?? 0,        // take section_order from first lesson
         }))
-        .sort((a, b) => a.minOrder - b.minOrder); // sort sections themselves
+        .sort((a, b) => a.section_order - b.section_order);  // sort sections by section_order
 
 
     // 🔹 Close sidebar when screen size is resized

@@ -31,11 +31,14 @@ interface Lesson {
 interface Section {
     name: string;
     lessons: Lesson[];
+    section_order: number; // ✅ new field
+
 }
 
 interface RawCourseData {
     section: string;
     title: string;
+    section_order: number; // ✅ new field
     description: string;
     suggestion: string;
     course_data_links: {
@@ -52,11 +55,11 @@ interface Props {
     mode?: "create" | "edit";
     courseId?: string;
 }
-
 function transformCourseDataToSections(rawData: RawCourseData[]): Section[] {
     if (!Array.isArray(rawData)) return [];
 
     const sectionMap: Record<string, Section> = {};
+    let orderCounter = 1;
 
     rawData.forEach((item) => {
         const sectionName = item.section || "Untitled";
@@ -65,6 +68,7 @@ function transformCourseDataToSections(rawData: RawCourseData[]): Section[] {
             sectionMap[sectionName] = {
                 name: sectionName,
                 lessons: [],
+                section_order: orderCounter++, // ✅ assign order here
             };
         }
 
@@ -81,8 +85,11 @@ function transformCourseDataToSections(rawData: RawCourseData[]): Section[] {
         });
     });
 
-    return Object.values(sectionMap);
+    // Convert map to array and sort by section_order
+    return Object.values(sectionMap).sort((a, b) => (a.section_order ?? 0) - (b.section_order ?? 0));
 }
+
+
 
 export function CourseContentForm({
     onNext,
@@ -109,8 +116,17 @@ export function CourseContentForm({
         console.log("Sections state updated:", sections);
     }, [sections]);
 
-    const handleAddSection = () =>
-        setSections((prev) => [...prev, { name: "", lessons: [] }]);
+    const handleAddSection = () => {
+        setSections((prev) => [
+            ...prev,
+            {
+                name: "",
+                lessons: [],
+                section_order: prev.length + 1, // ✅ assign order
+            },
+        ]);
+    };
+
 
     const handleRemoveSection = (index: number) =>
         setSections((prev) => prev.filter((_, i) => i !== index));

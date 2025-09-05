@@ -54,11 +54,20 @@ export default function LearnPage() {
             const { data: courseData } = await supabase
                 .from("courses")
                 .select(`
-        id, name,
-        course_data (id, title, description, section, "order")
-      `)
+    id, name,
+    course_data (
+      id,
+      title,
+      description,
+      section,
+      "order",
+      section_order
+    )
+  `)
                 .eq("id", id)
                 .single();
+
+
 
             const { data: quizData } = await supabase
                 .from("course_quizzes")
@@ -86,8 +95,18 @@ export default function LearnPage() {
 
             // pick first lesson
             if (courseData?.course_data?.length) {
-                const sortedLessons = [...courseData.course_data].sort((a, b) => a.order - b.order);
+                const sortedLessons = [...courseData.course_data]
+                    .sort((a, b) => {
+                        // sort by section_order first
+                        if ((a.section_order ?? 0) !== (b.section_order ?? 0)) {
+                            return (a.section_order ?? 0) - (b.section_order ?? 0);
+                        }
+                        // then by lesson order
+                        return (a.order ?? 0) - (b.order ?? 0);
+                    });
+
                 setSelected(sortedLessons[0]);
+
             }
 
             setLoading(false);
@@ -127,7 +146,12 @@ export default function LearnPage() {
 
 
     // sort lessons
-    const lessons = [...course.course_data].sort((a, b) => a.order - b.order);
+    const lessons = [...course.course_data].sort((a, b) => {
+        if ((a.section_order ?? 0) !== (b.section_order ?? 0)) {
+            return (a.section_order ?? 0) - (b.section_order ?? 0);
+        }
+        return (a.order ?? 0) - (b.order ?? 0);
+    });
     const currentIndex = lessons.findIndex((l) => l.id === selected?.id);
     const nextLesson = currentIndex >= 0 ? lessons[currentIndex + 1] : null;
 
@@ -202,4 +226,4 @@ export default function LearnPage() {
             </div>
         </div>
     );
-}
+};

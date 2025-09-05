@@ -56,9 +56,10 @@ export function CourseBenefitsForm({
             })));
         }
         if (defaultValues?.prerequisites) {
-            setPrerequisites(defaultValues.prerequisites.map((p) => ({
+            setPrerequisites(defaultValues.prerequisites.map((p, i) => ({
                 id: p.id,
                 title: p.title,
+                order: i,
             })));
         }
         if (defaultValues?.features) {

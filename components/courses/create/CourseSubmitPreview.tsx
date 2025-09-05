@@ -189,7 +189,10 @@ export function CourseSubmitPreview({
             );
 
         // Course Content
-        for (const section of content) {
+        // ---------------- Course Content ----------------
+        for (const [sectionIndex, section] of content.entries()) {
+            const sectionOrder = section.section_order ?? (sectionIndex + 1);
+
             for (const [lessonIndex, lesson] of section.lessons.entries()) {
                 const { data: lessonData } = await supabase
                     .from("course_data")
@@ -197,10 +200,11 @@ export function CourseSubmitPreview({
                         {
                             course_id: courseId,
                             section: section.name,
+                            section_order: sectionOrder, // ✅ save section_order
                             title: lesson.title,
                             description: lesson.description,
                             suggestion: lesson.suggestion,
-                            order: lessonIndex + 1,
+                            order: lessonIndex + 1, // ✅ lesson order
                         },
                     ])
                     .select()
@@ -218,6 +222,7 @@ export function CourseSubmitPreview({
                     );
             }
         }
+
 
         // Resources (Upload Files)
         if (resources?.ebook) {

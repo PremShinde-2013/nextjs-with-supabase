@@ -23,6 +23,8 @@ export function CreateCoursePage() {
     const [courseResources, setCourseResources] = useState<any>({}); // was null
     const [courseInstructors, setCourseInstructors] = useState<any>([]);
 
+
+
     return (
         <div className="p-6 space-y-4">
             <h1 className="text-xl font-bold">Create Course</h1>
@@ -50,7 +52,12 @@ export function CreateCoursePage() {
                         onNext={nextStep}
                         onBack={prevStep}
                         onChange={(data: any) => setCourseBenefits(data)}
-                        defaultValues={courseBenefits}
+                        // defaultValues={courseBenefits}
+                        defaultValues={{
+                            benefits: courseBenefits?.benefits ?? [],
+                            prerequisites: courseBenefits?.prerequisites ?? [],
+                            features: courseBenefits?.features ?? [], // 👈 ensure features are passed
+                        }}
                     />
                 </TabsContent>
 
