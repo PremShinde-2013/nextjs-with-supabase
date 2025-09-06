@@ -102,7 +102,7 @@ export default function CheckoutClient({ courseId, userId }: CheckoutClientProps
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: order.amount,
                 currency: order.currency,
-                name: "The Startups Explained",
+                name: "Skillveta",
                 description: course.name,
                 order_id: order.id,
                 handler: async (response: any) => {

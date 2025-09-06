@@ -87,7 +87,7 @@ export default function CheckoutInternshipClient({
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: order.amount, // paise (already handled by backend)
                 currency: order.currency,
-                name: "The Startups Explained",
+                name: "Skillveta",
                 description: internship.title,
                 order_id: order.id,
                 handler: async function (response: any) {
