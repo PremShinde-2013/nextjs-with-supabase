@@ -102,7 +102,7 @@ export function NavbarDemo() {
     const nonLoggedInNavItems = [
         { name: "Explore Courses", link: "/courses" },
         { name: "Explore Internships", link: "/internships" },
-        { name: "Support", link: "/support" },
+        { name: "Contact", link: "/contact" },
     ];
 
     // After fetching userData and setting role/profileUrl
