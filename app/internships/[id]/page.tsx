@@ -46,6 +46,8 @@ import CertificatePreview from "@/components/InternshipCertificatePreview";
 import CourseCTA from "@/components/courses/CourseCTA"; // reuse CTA for pricing
 import InternshipCTA from "@/components/internship/InternshipCTA";
 
+
+
 // 🔹 Types
 type Internship = {
     max_seats: any;

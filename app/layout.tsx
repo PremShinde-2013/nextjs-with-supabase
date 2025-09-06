@@ -15,25 +15,98 @@ const defaultUrl = process.env.NEXT_PUBLIC_APP_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Skillveta - Top Courses & Internships for Students",
-  description: "Skillveta provides top courses and internships for engineering students. Learn programming, web development, AI/ML, and boost your career with Skillveta.",
+
+  // 🔹 Title (Main headline in Google Search & browser tab)
+  title: {
+    default: "Skillveta - Top Courses & Internships for Students",
+    template: "%s | Skillveta", // makes dynamic titles like "C Programming Course | Skillveta"
+  },
+
+  // 🔹 Meta description (very important for Google CTR)
+  description:
+    "Skillveta is the #1 platform for students to learn and grow with top-rated online courses and internships. Master programming, web development, AI/ML, data science, and more. Get hands-on experience and boost your career with Skillveta.",
+
+  // 🔹 Keywords (helpful for secondary SEO signals)
   keywords: [
     "Skillveta",
     "online courses",
     "internships",
     "programming courses",
-    "web development",
+    "web development courses",
     "AI ML courses",
-    "engineering students",
+    "data science courses",
+    "full stack development",
+    "engineering internships",
+    "coding bootcamp",
+    "student career growth",
+    "learn programming online",
+    "software engineering courses",
   ],
-  authors: [{ name: "Skillveta Team" }],
 
+  authors: [{ name: "Skillveta Team", url: defaultUrl }],
+
+  creator: "Skillveta",
+  publisher: "Skillveta",
+
+  // 🔹 Robots (tell search engines what to do)
+  robots: {
+    index: true, // allow indexing
+    follow: true, // allow following links
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
+  },
+
+  // 🔹 Canonical URL (avoid duplicate SEO penalties)
+  alternates: {
+    canonical: defaultUrl,
+  },
+
+  // 🔹 Favicons
   icons: {
     icon: "/images/favicon-96x96.png",
-    shortcut: "/images/apple-icon-120x120.png",
+    shortcut: "/images/ms-icon-150x150.png",
     apple: "/images/apple-icon-120x120.png",
   },
+
+  // 🔹 Open Graph (Facebook, LinkedIn, WhatsApp, Slack)
+  openGraph: {
+    title: "Skillveta - Learn Programming, Web Dev & AI with Internships",
+    description:
+      "Skillveta helps students master coding, web development, AI/ML, and secure internships. Learn by doing with hands-on projects and boost your career opportunities.",
+    url: defaultUrl,
+    siteName: "Skillveta",
+    images: [
+      {
+        url: "/images/OG_card.png", // in public/images/
+        width: 1200,
+        height: 630,
+        alt: "Skillveta - Best Courses & Internships for Students",
+      },
+
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+
+  // 🔹 Twitter Cards (Twitter/X previews)
+  twitter: {
+    card: "summary_large_image",
+    title: "Skillveta - Courses & Internships for Students",
+    description:
+      "Learn programming, web development, AI/ML, and secure internships with Skillveta. Join today and level up your career.",
+    images: ["/images/twitter_card.png"], // optimized 1200x675px
+  },
+
+
+  // 🔹 Category (useful for certain crawlers)
+  category: "education",
 };
+
 
 
 const geistSans = Geist({

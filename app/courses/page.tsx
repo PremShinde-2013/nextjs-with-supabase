@@ -5,6 +5,31 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Globe, Award } from "lucide-react";
 
+
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Courses | Skillveta",
+    description: "Browse top programming, web development, AI/ML, and data science courses on Skillveta. Learn from experts and boost your career.",
+    openGraph: {
+        title: "Skillveta Courses - Learn Programming, AI & More",
+        description: "Explore the best online courses in programming, web development, AI/ML, and data science.",
+        url: "https://skillveta.com/courses",
+        siteName: "Skillveta",
+        images: [
+            {
+                url: "/public/images/OG_card.png",
+                width: 1200,
+                height: 630,
+                alt: "Skillveta Courses Page",
+            },
+        ],
+        locale: "en_US",
+        type: "website",
+    },
+};
+
+
 // ==================
 // Types
 // ==================

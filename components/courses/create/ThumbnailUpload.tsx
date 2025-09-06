@@ -19,8 +19,8 @@ export function ThumbnailUpload({ onChange }: { onChange: (url: string | null) =
         setUploading(true);
 
         const newFilePath = `thumbnails/${Date.now()}-${file.name}`;
-        console.log("Uploading file:", file);
-        console.log("File path:", newFilePath);
+        // console.log("Uploading file:", file);
+        // console.log("File path:", newFilePath);
 
         const { error } = await supabase.storage
             .from("course-files")

@@ -103,9 +103,9 @@ export function CourseContentForm({
 
     useEffect(() => {
         if (defaultValues && defaultValues.length > 0) {
-            console.log("Raw defaultValues received:", defaultValues);
+            // console.log("Raw defaultValues received:", defaultValues);
             const transformed = transformCourseDataToSections(defaultValues);
-            console.log("Transformed Sections:", transformed);
+            // console.log("Transformed Sections:", transformed);
             setSections(transformed);
         } else {
             setSections([]);
@@ -113,7 +113,7 @@ export function CourseContentForm({
     }, [defaultValues]);
 
     useEffect(() => {
-        console.log("Sections state updated:", sections);
+        // console.log("Sections state updated:", sections);
     }, [sections]);
 
     const handleAddSection = () => {

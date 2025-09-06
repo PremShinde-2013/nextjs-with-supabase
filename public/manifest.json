@@ -1,10 +1,24 @@
 {
-    "name": "SkillVeta",
+    "name": "SkillVeta - Courses & Internships for Students",
     "short_name": "SkillVeta",
+    "description": "SkillVeta helps students learn programming, web development, AI/ML, data science and secure internships with hands-on projects. Boost your career today.",
+    "lang": "en-US",
+    "dir": "ltr",
     "start_url": "/",
+    "scope": "/",
     "display": "standalone",
+    "orientation": "portrait",
     "background_color": "#ffffff",
     "theme_color": "#a855f7",
+    "categories": [
+        "education",
+        "career",
+        "technology",
+        "software",
+        "training",
+        "internship",
+        "courses"
+    ],
     "serviceworker": {
         "src": "/service-worker.js",
         "scope": "/",
@@ -12,9 +26,59 @@
     },
     "icons": [
         {
-            "src": "/favicon.ico",
-            "sizes": "48x48",
-            "type": "image/x-icon"
+            "src": "/images/apple-icon.png",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/apple-icon-precomposed.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/apple-icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/images/ms-icon-310x310.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/ms-icon-310x310.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
         }
-    ]
+    ],
+    "shortcuts": [
+        {
+            "name": "Courses",
+            "short_name": "Courses",
+            "description": "Explore top SkillVeta courses",
+            "url": "/courses",
+            "icons": [
+                {
+                    "src": "/images/apple-icon.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Internships",
+            "short_name": "Internships",
+            "description": "Browse internships and hands-on projects",
+            "url": "/internships",
+            "icons": [
+                {
+                    "src": "/images/apple-icon.png",
+                    "sizes": "96x96"
+                }
+            ]
+        }
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false
 }

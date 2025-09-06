@@ -9,6 +9,8 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Globe, Award, Users, FileText } from "lucide-react";
 
+
+
 type Internship = {
     id: string;
     title: string;

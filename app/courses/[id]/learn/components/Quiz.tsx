@@ -88,7 +88,7 @@ export default function Quiz({ questions, courseId, onComplete }: QuizProps) {
                     code: error.code,
                 });
             } else {
-                console.log("✅ Course completion saved!");
+                // console.log("✅ Course completion saved!");
             }
         } catch (err) {
             console.error("❌ Unexpected error saving course completion:", err);
