@@ -8,6 +8,10 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import rehypeRaw from "rehype-raw";
+
 
 export default function InternshipLessonPlayer({
     tab,
@@ -154,8 +158,12 @@ export default function InternshipLessonPlayer({
             </h1>
 
             {/* Content */}
-            <div className="prose dark:prose-invert max-w-none leading-relaxed text-[0.95rem]">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {/* Content */}
+            <div className="prose prose-lg dark:prose-invert max-w-none leading-relaxed text-[0.95rem]">
+                <ReactMarkdown
+                    remarkPlugins={[remarkGfm, remarkMath]}
+                    rehypePlugins={[rehypeKatex, rehypeRaw]}
+                >
                     {tab?.content || "🚀 Select a lesson to begin."}
                 </ReactMarkdown>
             </div>
