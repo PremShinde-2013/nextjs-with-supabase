@@ -83,9 +83,9 @@ type Instructor = {
     avatar_url: string | null;
 };
 
-type InternshipBenefit = { id: string; title: string; };
-type InternshipFeature = { id: string; title: string; };
-type InternshipPrerequisite = { id: string; title: string; };
+type InternshipBenefit = { id: string; title: string; description: string; };
+type InternshipFeature = { id: string; title: string; description: string; };
+type InternshipPrerequisite = { id: string; title: string; description: string; };
 type InternshipSection = {
     id: string;
     title: string;
@@ -649,17 +649,19 @@ export default function InternshipDetailsPage() {
                                 {benefits.map((b) => (
                                     <div
                                         key={b.id}
-                                        className="flex items-start gap-3 p-3 rounded-xl 
-                     bg-green-50 text-gray-900 
-                     dark:bg-green-900 dark:text-gray-100"
+                                        className="flex flex-col gap-1 p-3 rounded-xl bg-green-50 text-gray-900 dark:bg-green-900 dark:text-gray-100"
                                     >
-                                        <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mt-1" />
-                                        <span>{b.title}</span>
+                                        <div className="flex items-center gap-2">
+                                            <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mt-1" />
+                                            <span className="font-semibold">{b.title}</span>
+                                        </div>
+                                        {b.description && <p className="ml-7 text-sm text-gray-700 dark:text-gray-300">{b.description}</p>}
                                     </div>
                                 ))}
                             </div>
                         </div>
                     )}
+
                     {/* Prerequisites */}
                     {prerequisites.length > 0 && (
                         <div className="mt-10">
@@ -671,17 +673,15 @@ export default function InternshipDetailsPage() {
                                 {prerequisites.map((p) => (
                                     <div
                                         key={p.id}
-                                        className="p-3 rounded-lg 
-                     bg-red-50 text-gray-900 
-                     dark:bg-red-900/40 dark:text-gray-100"
+                                        className="p-3 rounded-lg bg-red-50 text-gray-900 dark:bg-red-900/40 dark:text-gray-100"
                                     >
-                                        ⚡ {p.title}
+                                        <div className="font-semibold">⚡ {p.title}</div>
+                                        {p.description && <p className="ml-5 text-sm text-gray-700 dark:text-gray-300">{p.description}</p>}
                                     </div>
                                 ))}
                             </div>
                         </div>
                     )}
-
 
                     {/* Features */}
                     {features.length > 0 && (
@@ -694,16 +694,16 @@ export default function InternshipDetailsPage() {
                                 {features.map((f) => (
                                     <div
                                         key={f.id}
-                                        className="p-3 rounded-lg 
-                     bg-purple-50 text-gray-900 
-                     dark:bg-purple-900/40 dark:text-gray-100"
+                                        className="p-3 rounded-lg bg-purple-50 text-gray-900 dark:bg-purple-900/40 dark:text-gray-100"
                                     >
-                                        🌟 {f.title}
+                                        <div className="font-semibold">🌟 {f.title}</div>
+                                        {f.description && <p className="ml-5 text-sm text-gray-700 dark:text-gray-300">{f.description}</p>}
                                     </div>
                                 ))}
                             </div>
                         </div>
                     )}
+
 
 
                     <CertificatePreview />
