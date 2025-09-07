@@ -23,13 +23,14 @@ export async function POST(req: Request) {
     } = body;
 
     const { data, error } = await resend.emails.send({
-      from: "YourApp <onboarding@resend.dev>", // ✅ must be verified domain
+      from: "YourApp <onboarding@resend.dev>",
       to: [email],
       subject: `🎉 Enrollment Confirmed: ${courseName}`,
       react: EmailTemplate({
+        type: "course",          // ✅ required
         firstName,
         lastName,
-        courseName,
+        title: courseName,       // ✅ map courseName to title
         description,
         duration,
         language,
