@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner"; // 👈 import toast
 
 export function UpdatePasswordForm({
   className,
@@ -33,9 +34,12 @@ export function UpdatePasswordForm({
     try {
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
-      router.push("/protected");
+
+      toast.success("✅ Password updated successfully!"); // 👈 success toast
+      router.push("/account"); // 👈 redirect to /account
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
+      toast.error(error instanceof Error ? error.message : "An error occurred"); // 👈 error toast
     } finally {
       setIsLoading(false);
     }
@@ -96,7 +100,6 @@ export function UpdatePasswordForm({
           </form>
         </CardContent>
       </Card>
-
     </div>
   );
 }

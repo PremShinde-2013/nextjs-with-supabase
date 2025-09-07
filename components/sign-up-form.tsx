@@ -19,7 +19,6 @@ export function SignUpForm() {
   const [repeatPassword, setRepeatPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== repeatPassword) return setError("Passwords do not match");
@@ -27,14 +26,34 @@ export function SignUpForm() {
     setIsLoading(true);
     setError(null);
 
+    // 1️⃣ Check in `users` table if email exists
+    const { data: existingUser } = await supabase
+      .from("users")
+      .select("id")
+      .eq("email", email)
+      .maybeSingle();
+
+    if (existingUser) {
+      setError("This email is already registered. Please login instead.");
+      setIsLoading(false);
+      return;
+    }
+
+    // 2️⃣ Try to sign up with Supabase Auth
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/signup-success-page` },
+      options: {
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/signup-success-page`,
+      },
     });
 
     if (signUpError) {
-      setError(signUpError.message);
+      if (signUpError.message.includes("already registered")) {
+        setError("This email is already registered. Please login instead.");
+      } else {
+        setError(signUpError.message);
+      }
       setIsLoading(false);
       return;
     }
@@ -45,6 +64,7 @@ export function SignUpForm() {
       return;
     }
 
+    // 3️⃣ Insert into your custom users table
     await supabase.from("users").insert({
       id: signUpData.user.id,
       first_name: firstName,
@@ -56,6 +76,7 @@ export function SignUpForm() {
     setIsLoading(false);
     router.push("/auth/sign-up-success");
   };
+
 
   const handleGoogleSignUp = async () => {
     setIsLoading(true);

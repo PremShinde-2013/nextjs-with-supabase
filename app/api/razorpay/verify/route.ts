@@ -59,23 +59,25 @@ export async function POST(req: Request) {
 
   if (user?.email && course) {
     try {
-      await resend.emails.send({
-        from: "YourApp <shindeprem102@gmail.com>", // change to your domain
-        to: user.email,
-        subject: `🎉 Enrollment Confirmed: ${course.name}`,
-        react: EmailTemplate({
-          firstName: user.first_name || "",
-          lastName: user.last_name || "",
-          courseName: course.name,
-          description: course.description,
-          duration: course.duration || "Self-paced",
-          language: course.language || "English",
-          amount,
-          orderId: razorpay_order_id,
-          paymentId: razorpay_payment_id,
-          appUrl: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}/learn`,
-        }),
-      });
+     await resend.emails.send({
+  from: "Skillveta <no-reply@skillveta.com>",
+  to: user.email,
+  subject: `🎉 Enrollment Confirmed: ${course.name}`,
+  react: EmailTemplate({
+    type: "course",               // ✅ new prop
+    firstName: user.first_name || "",
+    lastName: user.last_name || "",
+    title: course.name,            // ✅ renamed from courseName
+    description: course.description,
+    duration: course.duration || "Self-paced",
+    language: course.language || "English",
+    amount,
+    orderId: razorpay_order_id,
+    paymentId: razorpay_payment_id,
+    appUrl: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}/learn`,
+  }),
+});
+
     } catch (err) {
       console.error("Email send failed:", err);
     }

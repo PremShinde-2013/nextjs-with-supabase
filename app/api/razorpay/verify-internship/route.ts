@@ -117,23 +117,25 @@ if (enrollError) {
 
   if (user?.email && internship) {
     try {
-      await resend.emails.send({
-        from: "The Skillveta <no-reply@skillveta.com>",
-        to: user.email,
-        subject: `🎉 Enrollment Confirmed: ${internship.title}`,
-        react: EmailTemplate({
-          firstName: user.first_name || "",
-          lastName: user.last_name || "",
-          courseName: internship.title,
-          description: internship.description,
-          duration: internship.duration || "Flexible",
-          language: internship.language || "English",
-          amount,
-          orderId: razorpay_order_id,
-          paymentId: razorpay_payment_id,
-          appUrl: `${process.env.NEXT_PUBLIC_APP_URL}/internships/${internship.id}/learn`,
-        }),
-      });
+    await resend.emails.send({
+  from: "Skillveta <no-reply@skillveta.com>",
+  to: user.email,
+  subject: `🎉 Enrollment Confirmed: ${internship.title}`,
+  react: EmailTemplate({
+    type: "internship",           // ✅ new prop
+    firstName: user.first_name || "",
+    lastName: user.last_name || "",
+    title: internship.title,       // ✅ renamed from courseName
+    description: internship.description,
+    duration: internship.duration || "Flexible",
+    language: internship.language || "English",
+    amount,
+    orderId: razorpay_order_id,
+    paymentId: razorpay_payment_id,
+    appUrl: `${process.env.NEXT_PUBLIC_APP_URL}/internships/${internship.id}/learn`,
+  }),
+});
+
     } catch (err) {
       console.error("Email send failed:", err);
     }
