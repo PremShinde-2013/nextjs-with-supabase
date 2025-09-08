@@ -6,22 +6,22 @@ import Link from "next/link";
 const socialMedia = [
     {
         name: "YouTube",
-        href: "#",
+        href: "https://youtube.com/@skillveta?si=CU-6JZlgSG_5Dx2M",
         src: "https://dhyeneqgxucokgtxiyaj.supabase.co/storage/v1/object/public/avatars/youtube-color-svgrepo-com.svg",
     },
     {
         name: "LinkedIn",
-        href: "#",
+        href: "https://www.linkedin.com/company/skillveta-edu",
         src: "https://dhyeneqgxucokgtxiyaj.supabase.co/storage/v1/object/public/avatars/linkedin-svgrepo-com.svg",
     },
     {
         name: "Instagram",
-        href: "#",
+        href: "https://www.instagram.com/skillveta.in?igsh=MWNicHRuN243NjFycQ==",
         src: "https://dhyeneqgxucokgtxiyaj.supabase.co/storage/v1/object/public/avatars/instagram-svgrepo-com.svg",
     },
     {
         name: "Telegram",
-        href: "#",
+        href: "https://t.me/boost/Skillveta",
         src: "https://dhyeneqgxucokgtxiyaj.supabase.co/storage/v1/object/public/avatars/telegram-svgrepo-com.svg",
     },
 ];
