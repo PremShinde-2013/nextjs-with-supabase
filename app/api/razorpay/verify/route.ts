@@ -42,6 +42,8 @@ export async function POST(req: Request) {
     razorpay_payment_id,
     razorpay_signature,
     status: "completed",
+        message: `Skillveta - Course Purchase: ${course_id}`, // ✅ branding
+
   });
 
   if (purchaseError) {

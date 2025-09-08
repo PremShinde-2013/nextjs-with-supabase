@@ -19,8 +19,10 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         amount: amount * 100, // Razorpay expects paise
         currency: currency || "INR",
-        receipt: receipt || "receipt#1",
-      }),
+ receipt: receipt || `Skillveta_${Date.now()}`, // ✅ branding
+        notes: {
+          platform: "Skillveta",
+        },      }),
     });
 
     const order = await response.json();
