@@ -212,30 +212,40 @@ export default function InternshipDetailsPage() {
         return match ? `${match[1]} months` : interval;
     };
 
-
     const applyCoupon = async () => {
         if (!couponCode) return toast.error("Enter a coupon code");
+
         const { data: coupon, error } = await supabase
             .from("coupons")
             .select("*")
             .eq("code", couponCode.toUpperCase())
             .maybeSingle();
+
         if (error || !coupon) return toast.error("Invalid coupon");
 
         if (coupon.internship_id && coupon.internship_id !== internship?.id)
             return toast.error("Coupon not valid for this internship");
+
         if (coupon.expires_at && new Date(coupon.expires_at) < new Date())
             return toast.error("Coupon expired");
+
         if (coupon.max_uses && coupon.used_count >= coupon.max_uses)
             return toast.error("Coupon usage limit reached");
 
-        const discount = (internship!.price * coupon.discount_percent) / 100;
+        // ✅ Integer discount calculation
+        const discount = Math.floor((internship!.price * coupon.discount_percent) / 100);
         const newPrice = Math.max(internship!.price - discount, 0);
-        setDiscountedPrice(newPrice);
+
+        // ✅ Ensure discounted price is an integer
+        setDiscountedPrice(Math.round(newPrice));
+
         setAppliedCoupon(coupon.code);
         setCouponId(coupon.id);
-        toast.success(`Coupon applied! You saved ${coupon.discount_percent}% 🎉`);
+
+        // ✅ Also make discount percent look clean
+        toast.success(`Coupon applied! You saved ${Math.round(coupon.discount_percent)}% 🎉`);
     };
+
 
     if (loading) return <div className="p-8">⏳ Loading internship...</div>;
     if (!internship) return <div className="p-8">❌ Internship not found.</div>;

@@ -279,10 +279,13 @@ export default function CourseDetailsPage() {
         }
 
         // ✅ Apply discount on *discounted price* (course.price)
-        const discount = (course.price * coupon.discount_percent) / 100;
+        // ✅ Apply discount on *discounted price* (course.price)
+        const discount = Math.floor((course.price * coupon.discount_percent) / 100);
         const newPrice = Math.max(course.price - discount, 0);
 
-        setDiscountedPrice(newPrice);
+        // make sure it's always integer
+        setDiscountedPrice(Math.round(newPrice));
+
 
         // ⚡ Store BOTH coupon id & code separately
         setAppliedCoupon(coupon.code);  // for UI
