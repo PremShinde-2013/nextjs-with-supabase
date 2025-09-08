@@ -569,7 +569,7 @@ export default function InternshipDetailsPage() {
                                             <span className="text-pink-600">📝</span> Letter of Recommendation (LOR)
                                         </div>
                                     </div>
-                                    {/* Thumbnail
+                                    Thumbnail
                                     <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg">
                                         <Image
                                             src={internship.thumbnail_url || "https://via.placeholder.com/800x400"}
@@ -577,7 +577,7 @@ export default function InternshipDetailsPage() {
                                             fill
                                             className="object-cover"
                                         />
-                                    </div> */}
+                                    </div>
 
                                     {/* Demo Video */}
                                     {internship.demo_url && (
@@ -979,7 +979,7 @@ export default function InternshipDetailsPage() {
                                         <span className="text-pink-600">📝</span> Letter of Recommendation (LOR)
                                     </div>
                                 </div>
-                                {/* Thumbnail
+                                Thumbnail
                                 <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg">
                                     <Image
                                         src={internship.thumbnail_url || "https://via.placeholder.com/800x400"}
@@ -987,7 +987,7 @@ export default function InternshipDetailsPage() {
                                         fill
                                         className="object-cover"
                                     />
-                                </div> */}
+                                </div>
 
                                 {/* Demo Video */}
                                 {internship.demo_url && (

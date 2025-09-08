@@ -1,7 +1,7 @@
 {
-    "name": "SkillVeta - Courses & Internships for Students",
+    "name": "SkillVeta - Affordable Courses & Internships for Engineering Students",
     "short_name": "SkillVeta",
-    "description": "SkillVeta helps students learn programming, web development, AI/ML, data science and secure internships with hands-on projects. Boost your career today.",
+    "description": "Get top internships and affordable courses every engineering student can access. SkillVeta helps you learn coding, web development, AI/ML, data science, and land real internships with hands-on projects. Upgrade your skills and career without breaking the bank.",
     "lang": "en-US",
     "dir": "ltr",
     "start_url": "/",
@@ -26,12 +26,12 @@
     },
     "icons": [
         {
-            "src": "/images/apple-icon.png",
+            "src": "/images/favicon-96x96.png",
             "sizes": "72x72",
             "type": "image/png"
         },
         {
-            "src": "/images/apple-icon-precomposed.png",
+            "src": "/images/favicon-96x96.png",
             "sizes": "96x96",
             "type": "image/png"
         },
@@ -61,7 +61,7 @@
             "url": "/courses",
             "icons": [
                 {
-                    "src": "/images/apple-icon.png",
+                    "src": "/images/favicon-96x96.png",
                     "sizes": "96x96"
                 }
             ]
@@ -73,7 +73,7 @@
             "url": "/internships",
             "icons": [
                 {
-                    "src": "/images/apple-icon.png",
+                    "src": "/images/favicon-96x96.png",
                     "sizes": "96x96"
                 }
             ]

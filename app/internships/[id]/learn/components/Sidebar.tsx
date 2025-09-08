@@ -287,17 +287,22 @@ export default function Sidebar({
             />
 
             {/* Mobile drawer */}
+            {/* Mobile drawer */}
             <div
                 className={`md:hidden fixed top-0 left-0 h-screen w-64 z-50
-          transform transition-transform duration-300
-          bg-gradient-to-b from-white via-gray-50 to-gray-100 text-gray-900
-          dark:from-neutral-950 dark:via-black dark:to-neutral-950 dark:text-neutral-100 dark:border-neutral-800
-          border-r shadow-xl
-          ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
+      transform transition-transform duration-300
+      bg-gradient-to-b from-white via-gray-50 to-gray-100 text-gray-900
+      dark:from-neutral-950 dark:via-black dark:to-neutral-950 dark:text-neutral-100 dark:border-neutral-800
+      border-r shadow-xl
+      ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
+    `}
             >
-                <SidebarContent />
+                {/* ✅ Make it scrollable */}
+                <div className="h-full overflow-y-auto">
+                    <SidebarContent />
+                </div>
             </div>
+
 
             {/* Desktop sidebar */}
             <aside

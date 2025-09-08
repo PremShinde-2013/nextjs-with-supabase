@@ -69,8 +69,8 @@ export const metadata: Metadata = {
   // 🔹 Favicons
   icons: {
     icon: "/images/favicon-96x96.png",
-    shortcut: "/images/ms-icon-150x150.png",
-    apple: "/images/apple-icon-120x120.png",
+    shortcut: "/images/favicon-96x96.png",
+    apple: "/images/favicon-96x96.png",
   },
 
   // 🔹 Open Graph (Facebook, LinkedIn, WhatsApp, Slack)
