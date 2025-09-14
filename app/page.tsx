@@ -111,10 +111,10 @@ export default function Home() {
       {/* <LinkedInMockScroll /> */}
 
 
-      <div className="relative flex size-full items-center justify-center overflow-hidden  rounded-lg border-none bg-background py-20 md:my-12 my-8 ">
+      {/* <div className="relative flex size-full items-center justify-center overflow-hidden  rounded-lg border-none bg-background py-20 md:my-12 my-8 ">
 
         <PartnershipsShowcase />
-      </div>
+      </div> */}
 
       <div className="relative flex size-full items-center justify-center overflow-hidden  rounded-lg border-none bg-background py-20 md:my-12 my-8 ">
 
