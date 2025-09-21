@@ -8,6 +8,9 @@ import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/Landing/Footer";
 import { GridPattern } from "@/components/magicui/grid-pattern";
 import { cn } from "@/lib/utils";
+import { Pointer } from "@/components/ui/pointer";
+
+
 
 const defaultUrl = process.env.NEXT_PUBLIC_APP_URL
   ? `https://${process.env.NEXT_PUBLIC_APP_URL}`
@@ -203,6 +206,8 @@ export default function RootLayout({
           </div>
         </ThemeProvider>
         <Toaster />
+        <Pointer className="fill-orange-500" /> {/* Global Blue Pointer */}
+
 
 
       </body>
