@@ -1,105 +1,237 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# 🌟 SkillVeta – Learning & Internship Platform
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+SkillVeta is a **modern e-learning and internship management platform** built with **Next.js 15+ (App Router)**, **Supabase**, **TailwindCSS**, and **Razorpay**.
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+It provides:
 
-## Features
+* 📚 **Course learning & certification**
+* 🎓 **Internship enrollment, projects & submissions**
+* 📊 **Admin dashboards with analytics**
+* 💳 **Secure payments & invoicing**
+* 🪪 **Certificate verification system**
+* 👩‍🎓 **Personalized student dashboards**
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+---
 
-## Demo
+## ✨ Features
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+### 🎯 User Side
 
-## Deploy to Vercel
+* Sign-up, login, forgot/update password
+* Explore & purchase **courses/internships**
+* Learn via **interactive lessons, quizzes, projects & resources**
+* Download & verify **certificates**
 
-Vercel deployment will guide you through creating a Supabase account and project.
+### 🛠️ Admin Side
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+* Manage **courses, internships, projects, resources**
+* Monitor **analytics (users, courses, orders)**
+* Configure **settings, coupons, categories, FAQs**
+* Handle **payments & invoices**
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+### 💳 Payments & Verification
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+* Secure **Razorpay checkout**
+* Auto-generated **invoices & internship verifications**
+* **Certificate verification portal**
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+### 🌍 Landing & Support
 
-## Clone and run locally
+* Marketing landing page (hero, highlights, showcase, FAQ)
+* Contact & support pages
+* Policies: Refund, Privacy, Terms, Shipping
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+---
 
-2. Create a Next.js app using the Supabase Starter template npx command
+## 🛠️ Tech Stack
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+* **Framework**: Next.js 13+ (App Router)
+* **Database & Auth**: Supabase
+* **UI**: TailwindCSS + ShadCN UI
+* **Payments**: Razorpay
+* **Emails**: Resend + Custom templates
+* **Deployment**: Vercel (recommended), Docker
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+---
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+## 📂 File Structure
 
-3. Use `cd` to change into the app's directory
+Here’s the **detailed project structure** with explanations:
 
-   ```bash
-   cd with-supabase-app
-   ```
+```bash
+├── .gitignore
+├── README.md
+├── app/                                # Next.js App Router (main app entry)
+│   ├── ShippingPolicyPage/             # Static policy page
+│   │   └── page.tsx
+│   ├── account/                        # User account area
+│   │   ├── components/                 # Forms & account features
+│   │   │   ├── EditProfileForm.tsx     # Update profile info
+│   │   │   ├── UpdatePasswordForm.tsx  # Change password
+│   │   │   ├── UserCourses.tsx         # Display enrolled courses
+│   │   │   └── UserPayments.tsx        # Payment history
+│   │   └── page.tsx                    # Account dashboard
+│   ├── admin/                          # Admin dashboard
+│   │   ├── dashboard/                  # Core admin analytics & management
+│   │   │   ├── analytics/              # Analytics pages
+│   │   │   │   ├── course-analytics/page.tsx
+│   │   │   │   ├── orders-analytics/page.tsx
+│   │   │   │   └── user-analytics/page.tsx
+│   │   │   ├── courses/                # Course management
+│   │   │   │   ├── [id]/edit/page.tsx  # Edit specific course
+│   │   │   │   ├── [id]/quizzes/page.tsx
+│   │   │   │   ├── new/                # Course creation
+│   │   │   │   │   ├── CourseCreationForm.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx            # List all courses
+│   │   │   ├── customization/          # Customization features
+│   │   │   │   ├── categories/page.tsx
+│   │   │   │   ├── coupon/page.tsx
+│   │   │   │   └── faq/page.tsx
+│   │   │   ├── enrollments/page.tsx
+│   │   │   ├── instructor/page.tsx
+│   │   │   ├── internships/            # Internship management
+│   │   │   │   ├── [id]/edit/page.tsx
+│   │   │   │   ├── [id]/sections/page.tsx
+│   │   │   │   ├── new/InternshipCreationForm.tsx
+│   │   │   │   ├── projects/[id]/manageprojects/page.tsx
+│   │   │   │   ├── projects/[id]/submissions/page.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── invoices/page.tsx
+│   │   │   ├── payments/page.tsx
+│   │   │   ├── settings/page.tsx
+│   │   │   └── users/page.tsx
+│   │   └── layout.tsx                  # Admin layout
+│   ├── api/                            # API routes
+│   │   ├── courses/[id]/route.ts       # Course CRUD
+│   │   ├── internships/[id]/route.ts   # Internship CRUD
+│   │   ├── razorpay/                   # Payment endpoints
+│   │   │   ├── order/route.ts
+│   │   │   ├── verify/route.ts
+│   │   │   └── verify-internship/route.ts
+│   │   └── send/route.ts               # Email sending
+│   ├── auth/                           # Authentication pages
+│   │   ├── login/page.tsx
+│   │   ├── sign-up/page.tsx
+│   │   ├── forgot-password/page.tsx
+│   │   ├── update-password/page.tsx
+│   │   └── error/page.tsx
+│   ├── checkout/                       # Checkout flows
+│   │   ├── [id]/checkoutClient.tsx
+│   │   ├── [id]/page.tsx
+│   │   └── internship/[id]/page.tsx
+│   ├── courses/                        # Course learning flows
+│   │   ├── [id]/learn/components/      # Course learning UI
+│   │   │   ├── LessonPlayer.tsx        # Video lesson player
+│   │   │   ├── Sidebar.tsx             # Course navigation
+│   │   │   ├── Quiz.tsx                # Interactive quizzes
+│   │   │   └── ExtraResources.tsx
+│   │   └── page.tsx
+│   ├── internships/                    # Internship learning flows
+│   │   ├── [id]/learn/components/      # Similar to courses
+│   │   │   ├── LessonPlayer.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   └── Quiz.tsx
+│   │   ├── [id]/project/page.tsx       # Project submission
+│   │   └── page.tsx
+│   ├── student/                        # Student-specific dashboards
+│   │   ├── certificates/page.tsx
+│   │   ├── dashboard/page.tsx
+│   │   ├── my-journey/page.tsx
+│   │   └── layout.tsx
+│   ├── privacy-policy/page.tsx
+│   ├── refund/page.tsx
+│   ├── support/page.tsx
+│   ├── terms/page.tsx
+│   ├── verify-certificate/page.tsx     # Certificate verification
+│   ├── layout.tsx                      # Root layout
+│   ├── page.tsx                        # Landing page
+│   ├── error.tsx                       # Global error page
+│   └── not-found.tsx                   # 404 handler
+├── components/                         # Reusable UI components
+│   ├── Landing/                        # Landing page UI
+│   ├── courses/                        # Course-related UI
+│   ├── internship/                     # Internship-related UI
+│   ├── magicui/                        # Fancy animated components
+│   ├── tutorial/                       # Step-by-step tutorials
+│   ├── ui/                             # Shared UI primitives
+│   └── ...                             # Auth forms, navbar, etc.
+├── hooks/                              # Custom React hooks
+├── lib/                                # Utilities & integrations
+│   ├── supabase/                       # Supabase setup & helpers
+│   ├── getCourseResources.ts
+│   ├── resend.ts                       # Email utility
+│   └── utils.ts
+├── public/                             # Static assets
+│   ├── images/                         # App images
+│   ├── svg/                            # Social media icons
+│   └── fonts/                          # Custom fonts
+├── styles/
+│   └── globals.css                     # Global Tailwind styles
+├── tailwind.config.ts                  # Tailwind configuration
+├── next.config.ts                      # Next.js config
+├── middleware.ts                       # Middleware (auth checks)
+├── service-worker.js                   # PWA service worker
+├── package.json
+├── pnpm-lock.yaml
+└── tsconfig.json
+```
 
-4. Rename `.env.example` to `.env.local` and update the following:
+---
 
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   ```
+## ⚡ Getting Started
 
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
+### 1️⃣ Clone Repository
 
-5. You can now run the Next.js local development server:
+```bash
+git clone https://github.com/your-username/skillveta.git
+cd skillveta
+```
 
-   ```bash
-   npm run dev
-   ```
+### 2️⃣ Install Dependencies
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+```bash
+pnpm install
+# or
+npm install
+```
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+### 3️⃣ Environment Variables
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+Create a `.env.local` file:
 
-## Feedback and issues
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role
+RAZORPAY_KEY_ID=your_key
+RAZORPAY_KEY_SECRET=your_secret
+RESEND_API_KEY=your_resend_key
+```
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+### 4️⃣ Run Development Server
 
-## More Supabase examples
+```bash
+pnpm dev
+# or
+npm run dev
+```
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+App runs at: **[http://localhost:3000](http://localhost:3000)** 🚀
+
+---
+
+## 📦 Deployment
+
+* ✅ **Vercel** (recommended)
+* Docker, Netlify, AWS Amplify also supported
+
+---
+
+## 🤝 Contributing
+
+1. Fork repo & create a feature branch
+2. Write clean code (ESLint + Prettier included)
+3. Submit PR with clear description
+
+---
