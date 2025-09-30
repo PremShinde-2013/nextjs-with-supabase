@@ -45,22 +45,20 @@ export default function DownloadGate() {
         setUnlocked(true);
         setCountdown(null);
         confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
-
-
     };
+
     const buttonClasses =
         "w-full text-lg flex items-center justify-center gap-2 font-bold rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-2xl active:scale-95 active:shadow-inner";
 
-
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 dark:from-zinc-900 via-gray-200 dark:via-zinc-800 to-gray-100 dark:to-black text-gray-900 dark:text-white p-6 transition-colors duration-500">
-            <Card className="w-full max-w-lg shadow-2xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/90 backdrop-blur-md transition-colors duration-500">
-                <CardContent className="p-8 text-center space-y-6">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 dark:from-zinc-900 via-gray-200 dark:via-zinc-800 to-gray-100 dark:to-black text-gray-900 dark:text-white p-4 sm:p-6 transition-colors duration-500">
+            <Card className="w-full max-w-md sm:max-w-lg shadow-2xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/90 backdrop-blur-md transition-colors duration-500">
+                <CardContent className="p-6 sm:p-8 text-center space-y-6">
                     <motion.h1
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="text-3xl font-extrabold flex items-center justify-center gap-2"
+                        className="text-2xl sm:text-3xl font-extrabold flex items-center justify-center gap-2"
                     >
                         🚀 Skillveta Download Gate
                     </motion.h1>
@@ -83,7 +81,7 @@ export default function DownloadGate() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
-                        className="text-lg text-gray-700 dark:text-gray-300"
+                        className="text-base sm:text-lg text-gray-700 dark:text-gray-300"
                     >
                         Subscribe to our YouTube channel 🎥 to unlock your PDF 📂
                     </motion.p>
@@ -96,13 +94,13 @@ export default function DownloadGate() {
                                     window.open("https://www.youtube.com/@OffCampusHiringUpdates", "_blank");
                                 }}
                                 size="lg"
-                                className={`${buttonClasses} bg-gradient-to-r from-pink-500 via-red-600 to-yellow-500 text-white shadow-xl hover:from-yellow-500 hover:via-pink-500 hover:to-red-600 dark:from-pink-600 dark:via-red-700 dark:to-yellow-600 dark:hover:from-yellow-600 dark:hover:via-pink-600 dark:hover:to-red-700  ring-2 ring-pink-400 hover:ring-pink-300 transition-all duration-500`}
+                                className={`${buttonClasses} bg-gradient-to-r from-pink-500 via-red-600 to-yellow-500 text-white shadow-xl hover:from-yellow-500 hover:via-pink-500 hover:to-red-600 dark:from-pink-600 dark:via-red-700 dark:to-yellow-600 dark:hover:from-yellow-600 dark:hover:via-pink-600 dark:hover:to-red-700 ring-2 ring-pink-400 hover:ring-pink-300 transition-all duration-500 text-sm sm:text-lg`}
                             >
-                                <YoutubeIcon className="w-5 h-5 animate-bounce" /> Go to Channel & Subscribe
+                                <YoutubeIcon className="w-5 h-5 sm:w-6 sm:h-6 animate-bounce" /> Go to Channel & Subscribe
                             </Button>
 
                             {countdown !== null && (
-                                <p className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+                                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 animate-pulse">
                                     ⏳ Unlocking in {countdown}s ...
                                 </p>
                             )}
@@ -116,10 +114,10 @@ export default function DownloadGate() {
                             <Button
                                 asChild
                                 size="lg"
-                                className="w-full text-lg bg-green-500 hover:bg-green-600 dark:bg-green-400 dark:hover:bg-green-500 flex gap-2 items-center justify-center transition-colors duration-300"
+                                className={`${buttonClasses} bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:from-green-500 hover:via-green-600 hover:to-green-700 dark:from-green-500 dark:via-green-600 dark:to-green-700 text-white flex gap-2 items-center justify-center text-sm sm:text-lg`}
                             >
                                 <a href="https://dhyeneqgxucokgtxiyaj.supabase.co/storage/v1/object/public/youtube-recourses/Cognizant_Interview_Questions_Off-Campus-Hiring-Updates.pdf" download>
-                                    <Download className="w-5 h-5" /> Download PDF 🎉
+                                    <Download className="w-5 h-5 sm:w-6 sm:h-6" /> Download PDF 🎉
                                 </a>
                             </Button>
                         </motion.div>
